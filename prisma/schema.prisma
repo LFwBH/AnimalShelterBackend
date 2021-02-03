@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+generator client {
+  provider  = "prisma-client-js"
+}
+
+model Breed {
+  @@map(name: "breed")
+  id_breed  Int     @default(autoincrement()) @id
+  name      String
+}
+
+model Color {
+  @@map(name: "color")
+  id_color  Int     @default(autoincrement()) @id
+  name      String
+}
+
+model Sex {
+  @@map(name: "sex")
+  id_sex    Int     @default(autoincrement()) @id
+  name      String
+}
+
+model Pet {
+  @@map(name: "pet")
+  id_pet      Int     @default(autoincrement()) @id
+  name        String
+  description String
+  special     Boolean @default(false)
+  age         Float
+  breed       Breed   @relation(fields: [id_breed], references: [id_breed])
+  id_breed    Int
+  color       Color   @relation(fields: [id_color], references: [id_color])
+  id_color    Int
+  sex         Sex     @relation(fields: [id_sex], references: [id_sex])
+  id_sex      Int
+}
