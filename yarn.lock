@@ -1671,9 +1671,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"animal-shelter-nest@workspace:.":
+"animal-shelter-backend@workspace:.":
   version: 0.0.0-use.local
-  resolution: "animal-shelter-nest@workspace:."
+  resolution: "animal-shelter-backend@workspace:."
   dependencies:
     "@nestjs/cli": ^7.5.1
     "@nestjs/common": ^7.5.1
