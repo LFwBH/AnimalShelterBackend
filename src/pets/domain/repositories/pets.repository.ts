@@ -1,14 +1,13 @@
-import { Nullable } from "../../../common/types";
 import { Pet } from "../entities/pet.entity";
 
 export interface PetsRepository {
-  create(pet: Pet): Promise<void>;
+  create(pet: Pet): Promise<Pet>;
 
-  findAll(): Promise<Iterable<Pet>>;
+  // findAll(): Promise<Iterable<Pet>>;
 
-  findOne(id: number): Promise<Nullable<Pet>>;
+  // findOne(id: number): Promise<Nullable<Pet>>;
 
-  update(id: number, pet: Pet): Promise<void>;
+  // update(id: number, pet: Pet): Promise<Pet>;
 
-  remove(id: number): Promise<void>;
+  // remove(id: number): Promise<Pet>;
 }

@@ -1050,6 +1050,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/faker@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "@types/faker@npm:5.1.6"
+  checksum: 4fb5005a7292270ada198cb731ce7dde94a91a671b0e6bd0a4fa04e995ed93f83f357ef60dca8ec79ce42401c285e28eed4907226293a4154f83b830fb7adf60
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.4
   resolution: "@types/graceful-fs@npm:4.1.4"
@@ -1084,7 +1091,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:26.x, @types/jest@npm:^26.0.15":
+"@types/jest-json-schema@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "@types/jest-json-schema@npm:2.1.3"
+  dependencies:
+    "@types/jest": "*"
+    ajv: ^6.10.2
+  checksum: 40e843a487b483fe02dabce1a9aee1be374178ac523e52c5dccca5a2df3dedb4869b47b2ad90be2ba120676ec5cdb30d14db5be70dcf5951e4fbee90d46fb146
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:*, @types/jest@npm:26.x, @types/jest@npm:^26.0.15":
   version: 26.0.20
   resolution: "@types/jest@npm:26.0.20"
   dependencies:
@@ -1647,7 +1664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:6.12.6, ajv@npm:^6.10.0, ajv@npm:^6.12.2, ajv@npm:^6.12.3, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
+"ajv@npm:6.12.6, ajv@npm:^6.10.0, ajv@npm:^6.10.2, ajv@npm:^6.12.2, ajv@npm:^6.12.3, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -1684,7 +1701,9 @@ __metadata:
     "@nestjs/testing": ^7.5.1
     "@prisma/client": 2.16.0
     "@types/express": ^4.17.8
+    "@types/faker": ^5.1.6
     "@types/jest": ^26.0.15
+    "@types/jest-json-schema": ^2.1.3
     "@types/node": ^14.14.6
     "@types/supertest": ^2.0.10
     "@typescript-eslint/eslint-plugin": ^4.6.1
@@ -1697,8 +1716,10 @@ __metadata:
     eslint-plugin-prettier: ^3.1.4
     eslint-plugin-simple-import-sort: ^7.0.0
     eslint-plugin-unicorn: ^27.0.0
+    faker: ^5.3.1
     husky: ^4.3.8
     jest: ^26.6.3
+    jest-json-schema: ^5.0.0
     lint-staged: ^10.5.3
     prettier: ^2.1.2
     prisma: 2.16.0
@@ -3745,6 +3766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"faker@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "faker@npm:5.3.1"
+  checksum: 40f3e92fe392f4269d5891b85ab787e1049fd2dfceb51e703a8142dc1a02aeb823b1beef986f0222eb17eac3968474cdc90a9d6128440b5b14be4df20391d731
+  languageName: node
+  linkType: hard
+
 "fast-deep-equal@npm:^3.1.1":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -5182,6 +5210,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"jest-json-schema@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "jest-json-schema@npm:5.0.0"
+  dependencies:
+    ajv: ^6.10.2
+    chalk: ^4.1.0
+    jest-matcher-utils: ^26.6.1
+  checksum: 22a1ee37d042f5f672f005a86314095495630aea5c057d6b9c4d79a201a40a04a946974f3c10f4d13ad52cab93f2e398776ce7f44fdb9ce9c42c4fe6e05b7c97
+  languageName: node
+  linkType: hard
+
 "jest-leak-detector@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-leak-detector@npm:26.6.2"
@@ -5192,7 +5231,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"jest-matcher-utils@npm:^26.6.2":
+"jest-matcher-utils@npm:^26.6.1, jest-matcher-utils@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-matcher-utils@npm:26.6.2"
   dependencies:

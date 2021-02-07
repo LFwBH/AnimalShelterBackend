@@ -8,40 +8,88 @@ import {
   ValidateNested,
 } from "class-validator";
 
-import { Optional } from "../../../common/types";
+import { Entity } from "../../../common/Entity";
+import { Optional } from "../../../common/Optional";
 
-class Breed {
-  @IsOptional()
-  @IsNumber()
-  readonly id: Optional<number>;
-
-  @IsString()
-  readonly name: string;
+interface CreateBreedPayload {
+  id: Optional<number>;
+  name: Optional<string>;
 }
 
-class Color {
-  @IsOptional()
-  @IsNumber()
-  readonly id: Optional<number>;
-
+export class Breed extends Entity<number> {
   @IsString()
-  readonly name: string;
+  @IsOptional()
+  readonly name: Optional<string>;
+
+  constructor(payload: CreateBreedPayload) {
+    super({ id: payload.id });
+    this.name = payload.name;
+  }
+
+  static async new(payload: CreateBreedPayload) {
+    const breed = new Breed(payload);
+    await breed.validate();
+    return breed;
+  }
 }
 
-class Sex {
-  @IsNumber()
-  @IsOptional()
-  readonly id: Optional<number>;
-
-  @IsString()
-  readonly name: string;
+interface CreateColorPayload {
+  id: Optional<number>;
+  name: Optional<string>;
 }
 
-export class Pet {
-  @IsNumber()
+export class Color extends Entity<number> {
+  @IsString()
   @IsOptional()
-  readonly id: Optional<number>;
+  readonly name: Optional<string>;
 
+  constructor(payload: CreateColorPayload) {
+    super({ id: payload.id });
+    this.name = payload.name;
+  }
+
+  static async new(payload: CreateColorPayload) {
+    const color = new Color(payload);
+    await color.validate();
+    return color;
+  }
+}
+
+interface CreateSexPayload {
+  id: Optional<number>;
+  name: Optional<string>;
+}
+
+export class Sex extends Entity<number> {
+  @IsString()
+  @IsOptional()
+  readonly name: Optional<string>;
+
+  constructor(payload: CreateSexPayload) {
+    super({ id: payload.id });
+
+    this.name = payload.name;
+  }
+
+  static async new(payload: CreateSexPayload) {
+    const sex = new Sex(payload);
+    await sex.validate();
+    return sex;
+  }
+}
+
+interface CreatePetPayload {
+  id: Optional<number>;
+  name: string;
+  age: number;
+  description: string;
+  special: boolean;
+  breed: Breed;
+  color: Color;
+  sex: Sex;
+}
+
+export class Pet extends Entity<number> {
   @IsString()
   @IsNotEmpty()
   readonly name: string;
@@ -67,4 +115,21 @@ export class Pet {
   @IsInstance(Sex)
   @ValidateNested()
   readonly sex: Sex;
+
+  constructor(payload: CreatePetPayload) {
+    super({ id: payload.id });
+    this.name = payload.name;
+    this.age = payload.age;
+    this.description = payload.description;
+    this.special = payload.special;
+    this.breed = payload.breed;
+    this.color = payload.color;
+    this.sex = payload.sex;
+  }
+
+  static async new(payload: CreatePetPayload) {
+    const pet = new Pet(payload);
+    await pet.validate();
+    return pet;
+  }
 }

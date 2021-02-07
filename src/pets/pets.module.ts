@@ -6,6 +6,6 @@ import { provider as infrastructureProviders } from "./infrastructure/providers"
 
 @Module({
   controllers: [PetsController],
-  providers: [...applicationProviders, ...infrastructureProviders],
+  providers: [...infrastructureProviders, ...applicationProviders],
 })
 export class PetsModule {}
