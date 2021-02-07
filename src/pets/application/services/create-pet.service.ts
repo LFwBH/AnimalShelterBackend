@@ -26,6 +26,8 @@ export class CreatePetService implements CreatePetUseCase {
       breed,
       sex,
       color,
+      createdAt: undefined,
+      updatedAt: undefined,
     });
 
     return this.petsRepository.create(pet);

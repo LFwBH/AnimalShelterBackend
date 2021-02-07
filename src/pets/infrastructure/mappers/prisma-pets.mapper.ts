@@ -23,6 +23,8 @@ export class PrismaPetsMapper {
       id_color: pet.breed.id,
       id_sex: pet.sex.id,
       special: pet.special,
+      created_at: pet.createdAt,
+      updated_at: pet.updatedAt,
     };
   }
 
@@ -46,6 +48,8 @@ export class PrismaPetsMapper {
       color,
       sex,
       breed,
+      createdAt: pet.created_at,
+      updatedAt: pet.updated_at,
     });
   }
 }

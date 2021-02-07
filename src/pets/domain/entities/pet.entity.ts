@@ -1,5 +1,7 @@
 import {
   IsBoolean,
+  IsDate,
+  IsDateString,
   IsInstance,
   IsNotEmpty,
   IsNumber,
@@ -87,6 +89,8 @@ interface CreatePetPayload {
   breed: Breed;
   color: Color;
   sex: Sex;
+  createdAt: Optional<Date>;
+  updatedAt: Optional<Date>;
 }
 
 export class Pet extends Entity<number> {
@@ -116,6 +120,14 @@ export class Pet extends Entity<number> {
   @ValidateNested()
   readonly sex: Sex;
 
+  @IsDate()
+  @IsOptional()
+  readonly createdAt: Optional<Date>;
+
+  @IsDate()
+  @IsOptional()
+  readonly updatedAt: Optional<Date>;
+
   constructor(payload: CreatePetPayload) {
     super({ id: payload.id });
     this.name = payload.name;
@@ -125,6 +137,8 @@ export class Pet extends Entity<number> {
     this.breed = payload.breed;
     this.color = payload.color;
     this.sex = payload.sex;
+    this.createdAt = payload.createdAt;
+    this.updatedAt = payload.updatedAt;
   }
 
   static async new(payload: CreatePetPayload): Promise<Pet> {

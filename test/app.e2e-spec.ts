@@ -9,11 +9,15 @@ import * as faker from "faker";
 import * as request from "supertest";
 
 import { HttpExceptionFilter } from "../src/filters/http-exception.filter";
-import { Breed, Color, Pet, Sex } from "../src/pets/domain/entities/pet.entity";
+import { Pet } from "../src/pets/domain/entities/pet.entity";
 import { PETS_REPOSITORY } from "../src/pets/domain/providers";
 import { PetsRepository } from "../src/pets/domain/repositories/pets.repository";
 import { PetsModule } from "../src/pets/pets.module";
 import { PrismaService } from "../src/services/prisma.service";
+import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
+import getPetSchema from "./helpers/getPetSchema";
+import getRandomPet from "./helpers/getRandomPet";
+import getResponseSchema from "./helpers/getResponseSchema";
 
 describe("PetsController (e2e)", () => {
   let app: INestApplication;
@@ -24,25 +28,32 @@ describe("PetsController (e2e)", () => {
   };
 
   const mockPrismaPetsRepository: PetsRepository = {
-    create: async (pet: Pet) => {
-      return Pet.new({
+    create: async (pet) => {
+      return getRandomPet({
         ...pet,
-        id: faker.random.number(),
-        color: await Color.new({
-          id: pet.color.id,
-          name: undefined,
-        }),
-        breed: await Breed.new({
-          id: pet.breed.id,
-          name: undefined,
-        }),
-        sex: await Sex.new({
-          id: pet.sex.id,
-          name: undefined,
-        }),
+        colorId: pet.color.id,
+        breedId: pet.breed.id,
+        sexId: pet.sex.id,
       });
     },
-    // findAll: async () => [],
+
+    findAll: async (page) => {
+      const pets: Pet[] = [];
+
+      if (page.take != null) {
+        for (
+          let i = page.cursor ?? 0;
+          i < (page.cursor ?? 0) + page.take;
+          i++
+        ) {
+          const pet = await getRandomPet({ id: i });
+          pets.push(pet);
+        }
+      }
+
+      return pets;
+    },
+
     // findOne: async (id: number) => null,
     // remove: async (id: number) => {},
     // update: async (id: number, pet: Pet) => {},
@@ -69,67 +80,7 @@ describe("PetsController (e2e)", () => {
   });
 
   it("/pets (POST 201)", () => {
-    const schema = {
-      properties: {
-        code: { type: "number" },
-        message: { type: "string" },
-        data: {
-          type: "object",
-          properties: {
-            id: { type: "number" },
-            name: { type: "string" },
-            description: { type: "string" },
-            special: { type: "boolean" },
-            age: { type: "number" },
-            breed: {
-              type: "object",
-              properties: {
-                id: {
-                  type: "number",
-                },
-                name: {
-                  type: "number",
-                },
-              },
-            },
-            sex: {
-              type: "object",
-              properties: {
-                id: {
-                  type: "number",
-                },
-                name: {
-                  type: "number",
-                },
-              },
-            },
-            color: {
-              type: "object",
-              properties: {
-                id: {
-                  type: "number",
-                },
-                name: {
-                  type: "number",
-                },
-              },
-            },
-          },
-          required: [
-            "id",
-            "name",
-            "description",
-            "special",
-            "age",
-            "breed",
-            "color",
-            "sex",
-          ],
-        },
-        timestamp: { type: "number" },
-      },
-      required: ["code", "message", "data", "timestamp"],
-    };
+    const schema = getResponseSchema(getPetSchema());
 
     return request(app.getHttpServer())
       .post("/pets")
@@ -151,34 +102,9 @@ describe("PetsController (e2e)", () => {
   });
 
   it("/pets (POST 400)", () => {
-    const schema = {
-      properties: {
-        code: { type: "number" },
-        message: { type: "string" },
-        data: {
-          type: "object",
-          properties: {
-            context: { type: "string" },
-            errors: {
-              type: "array",
-              contains: {
-                type: "object",
-                properties: {
-                  property: { type: "string" },
-                  message: { type: "array", contains: { type: "string" } },
-                },
-                required: ["property", "message"],
-              },
-              minItems: 3,
-              maxItems: 3,
-            },
-          },
-          required: ["context", "errors"],
-        },
-        timestamp: { type: "number" },
-      },
-      required: ["code", "message", "data", "timestamp"],
-    };
+    const schema = getResponseSchema(
+      getHttpErrorSchema({ minItems: 3, maxItems: 3 }),
+    );
 
     return request(app.getHttpServer())
       .post("/pets")
@@ -192,6 +118,25 @@ describe("PetsController (e2e)", () => {
       .expect((res) => {
         expect(schema).toBeValidSchema();
         expect(res.body.message).toEqual("Use-case port validation error");
+        expect(res.body).toMatchSchema(schema);
+      });
+  });
+
+  it("/pets?take=10 (GET)", () => {
+    const schema = getResponseSchema({
+      type: "array",
+      contains: getPetSchema(),
+      minItems: 10,
+      maxItems: 10,
+    });
+
+    return request(app.getHttpServer())
+      .get("/pets")
+      .query({ take: 10 })
+      .expect(200)
+      .expect((res) => {
+        expect(schema).toBeValidSchema();
+        expect(res.body.message).toEqual("Success");
         expect(res.body).toMatchSchema(schema);
       });
   });

@@ -4,5 +4,5 @@ import { IsNumber } from "class-validator";
 import { CreatePetDto } from "./create-pet.dto";
 
 export class UpdatePetDto extends PartialType(CreatePetDto) {
-  @IsNumber() id: number;
+  @IsNumber() readonly id: number;
 }

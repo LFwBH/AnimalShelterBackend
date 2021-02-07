@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Post, Query } from "@nestjs/common";
 
 import { CoreApiResponse } from "../../../common/CoreApiResponse";
 import { Pet } from "../../domain/entities/pet.entity";
@@ -9,6 +9,7 @@ import {
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
 import { FindAllPetsUseCase } from "../../domain/usecases/find-all-pets.usecase";
 import { CreatePetAdapter } from "../../infrastructure/adapters/create-pet.adapter";
+import { FindAllPetsAdapter } from "../../infrastructure/adapters/find-all-pets.adapter";
 import { CreatePetDto } from "../dto/create-pet.dto";
 
 @Controller("pets")
@@ -28,8 +29,15 @@ export class PetsController {
   }
 
   @Get()
-  async findAll(): Promise<CoreApiResponse<Iterable<Pet>>> {
-    const pets = await this.findAllPetsUseCase.execute();
+  async findAll(
+    @Query("cursor") cursor: number,
+    @Query("take") take: number,
+  ): Promise<CoreApiResponse<Iterable<Pet>>> {
+    const adapter = await FindAllPetsAdapter.new({
+      cursor: cursor ? Number(cursor) : undefined,
+      take: take ? Number(take) : undefined,
+    });
+    const pets = await this.findAllPetsUseCase.execute(adapter);
     return CoreApiResponse.success(pets);
   }
 
