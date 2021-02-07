@@ -1,22 +1,31 @@
 import { Provider } from "@nestjs/common";
 
 import { TransactionalUseCaseWrapper } from "../../../common/TransactionalUseCaseWrapper";
-import { PrismaService } from "../../../services/prisma.service";
-import { CREATE_PET_USE_CASE, PETS_REPOSITORY } from "../../domain/providers";
+import {
+  CREATE_PET_USE_CASE,
+  FIND_ALL_PETS_USE_CASE,
+  PETS_REPOSITORY,
+} from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { CreatePetService } from "../services/create-pet.service";
+import { FindAllPetsService } from "../services/find-all-pets.service";
 
 const providers: Provider[] = [
   {
     provide: CREATE_PET_USE_CASE,
-    useFactory: (
-      prismaService: PrismaService,
-      petsRepository: PetsRepository,
-    ) => {
+    useFactory: (petsRepository: PetsRepository) => {
       const createPetService = new CreatePetService(petsRepository);
-      return new TransactionalUseCaseWrapper(prismaService, createPetService);
+      return new TransactionalUseCaseWrapper(createPetService);
     },
-    inject: [PrismaService, PETS_REPOSITORY],
+    inject: [PETS_REPOSITORY],
+  },
+  {
+    provide: FIND_ALL_PETS_USE_CASE,
+    useFactory: (petsRepository: PetsRepository) => {
+      const findAllPetsService = new FindAllPetsService(petsRepository);
+      return new TransactionalUseCaseWrapper(findAllPetsService);
+    },
+    inject: [PETS_REPOSITORY],
   },
 ];
 

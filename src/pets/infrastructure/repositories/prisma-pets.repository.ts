@@ -22,7 +22,16 @@ export class PrismaPetsRepository implements PetsRepository {
     return PrismaPetsMapper.toEntityPet(result);
   }
 
-  // async findAll(): Promise<Iterable<Pet>> {}
+  async findAll(): Promise<Iterable<Pet>> {
+    const pets = await this.prismaService.pet.findMany({
+      include: {
+        sex: true,
+        breed: true,
+        color: true,
+      },
+    });
+    return Promise.all(pets.map((p) => PrismaPetsMapper.toEntityPet(p)));
+  }
 
   // async findOne(id: number): Promise<Nullable<Pet>> {}
 

@@ -1,7 +1,5 @@
-import { Nullable } from "./Nullable";
-
 export interface UseCase<TUseCasePort, TUseCaseResult> {
-  execute(port?: TUseCasePort): Promise<Nullable<TUseCaseResult>>;
+  execute(port?: TUseCasePort): Promise<TUseCaseResult>;
 }
 
 export interface TransactionalUseCase<TUseCasePort, TUseCaseResult>

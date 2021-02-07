@@ -1,9 +1,13 @@
-import { Body, Controller, Inject, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Post } from "@nestjs/common";
 
 import { CoreApiResponse } from "../../../common/CoreApiResponse";
 import { Pet } from "../../domain/entities/pet.entity";
-import { CREATE_PET_USE_CASE } from "../../domain/providers";
+import {
+  CREATE_PET_USE_CASE,
+  FIND_ALL_PETS_USE_CASE,
+} from "../../domain/providers";
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
+import { FindAllPetsUseCase } from "../../domain/usecases/find-all-pets.usecase";
 import { CreatePetAdapter } from "../../infrastructure/adapters/create-pet.adapter";
 import { CreatePetDto } from "../dto/create-pet.dto";
 
@@ -12,6 +16,8 @@ export class PetsController {
   constructor(
     @Inject(CREATE_PET_USE_CASE)
     private readonly createPetUseCase: CreatePetUseCase,
+    @Inject(FIND_ALL_PETS_USE_CASE)
+    private readonly findAllPetsUseCase: FindAllPetsUseCase,
   ) {}
 
   @Post()
@@ -21,10 +27,11 @@ export class PetsController {
     return CoreApiResponse.success(pet);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.createPetService.findAll();
-  // }
+  @Get()
+  async findAll(): Promise<CoreApiResponse<Iterable<Pet>>> {
+    const pets = await this.findAllPetsUseCase.execute();
+    return CoreApiResponse.success(pets);
+  }
 
   // @Get(":id")
   // findOne(@Param("id") id: string) {

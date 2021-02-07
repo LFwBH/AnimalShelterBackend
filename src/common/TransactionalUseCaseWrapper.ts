@@ -1,11 +1,9 @@
-import { PrismaService } from "../services/prisma.service";
 import { Nullable } from "./Nullable";
 import { TransactionalUseCase, UseCase } from "./UseCase";
 
 export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
   implements UseCase<TUseCasePort, TUseCaseResult> {
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly useCase: TransactionalUseCase<
       TUseCasePort,
       TUseCaseResult
