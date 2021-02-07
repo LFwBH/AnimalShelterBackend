@@ -9,11 +9,11 @@ export class PrismaService
     super({ log: ["query", "info", "warn", "error"] });
   }
 
-  async onModuleDestroy() {
+  async onModuleDestroy(): Promise<void> {
     await this.$disconnect();
   }
 
-  async onModuleInit() {
+  async onModuleInit(): Promise<void> {
     await this.$connect();
   }
 }

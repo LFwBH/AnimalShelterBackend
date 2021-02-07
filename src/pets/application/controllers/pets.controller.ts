@@ -1,6 +1,7 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
 
 import { CoreApiResponse } from "../../../common/CoreApiResponse";
+import { Pet } from "../../domain/entities/pet.entity";
 import { CREATE_PET_USE_CASE } from "../../domain/providers";
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
 import { CreatePetAdapter } from "../../infrastructure/adapters/create-pet.adapter";
@@ -14,7 +15,7 @@ export class PetsController {
   ) {}
 
   @Post()
-  async create(@Body() body: CreatePetDto) {
+  async create(@Body() body: CreatePetDto): Promise<CoreApiResponse<Pet>> {
     const adapter = await CreatePetAdapter.new(body);
     const pet = await this.createPetUseCase.execute(adapter);
     return CoreApiResponse.success(pet);

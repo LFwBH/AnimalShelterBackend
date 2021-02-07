@@ -26,7 +26,7 @@ export class Breed extends Entity<number> {
     this.name = payload.name;
   }
 
-  static async new(payload: CreateBreedPayload) {
+  static async new(payload: CreateBreedPayload): Promise<Breed> {
     const breed = new Breed(payload);
     await breed.validate();
     return breed;
@@ -48,7 +48,7 @@ export class Color extends Entity<number> {
     this.name = payload.name;
   }
 
-  static async new(payload: CreateColorPayload) {
+  static async new(payload: CreateColorPayload): Promise<Color> {
     const color = new Color(payload);
     await color.validate();
     return color;
@@ -71,7 +71,7 @@ export class Sex extends Entity<number> {
     this.name = payload.name;
   }
 
-  static async new(payload: CreateSexPayload) {
+  static async new(payload: CreateSexPayload): Promise<Sex> {
     const sex = new Sex(payload);
     await sex.validate();
     return sex;
@@ -127,7 +127,7 @@ export class Pet extends Entity<number> {
     this.sex = payload.sex;
   }
 
-  static async new(payload: CreatePetPayload) {
+  static async new(payload: CreatePetPayload): Promise<Pet> {
     const pet = new Pet(payload);
     await pet.validate();
     return pet;
