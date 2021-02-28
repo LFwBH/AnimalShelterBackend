@@ -1,6 +1,9 @@
 import { Prisma } from "@prisma/client";
 
-import { Breed, Color, Pet, Sex } from "../../domain/entities/pet.entity";
+import { Breed } from "../../domain/entities/breed.entity";
+import { Color } from "../../domain/entities/color.entity";
+import { Pet } from "../../domain/entities/pet.entity";
+import { Sex } from "../../domain/entities/sex.entity";
 
 type PrismaPet = Prisma.PetGetPayload<unknown>;
 

@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsDate,
-  IsDateString,
   IsInstance,
   IsNotEmpty,
   IsNumber,
@@ -12,73 +11,9 @@ import {
 
 import { Entity } from "../../../common/Entity";
 import { Optional } from "../../../common/Optional";
-
-interface CreateBreedPayload {
-  id: Optional<number>;
-  name: Optional<string>;
-}
-
-export class Breed extends Entity<number> {
-  @IsString()
-  @IsOptional()
-  readonly name: Optional<string>;
-
-  constructor(payload: CreateBreedPayload) {
-    super({ id: payload.id });
-    this.name = payload.name;
-  }
-
-  static async new(payload: CreateBreedPayload): Promise<Breed> {
-    const breed = new Breed(payload);
-    await breed.validate();
-    return breed;
-  }
-}
-
-interface CreateColorPayload {
-  id: Optional<number>;
-  name: Optional<string>;
-}
-
-export class Color extends Entity<number> {
-  @IsString()
-  @IsOptional()
-  readonly name: Optional<string>;
-
-  constructor(payload: CreateColorPayload) {
-    super({ id: payload.id });
-    this.name = payload.name;
-  }
-
-  static async new(payload: CreateColorPayload): Promise<Color> {
-    const color = new Color(payload);
-    await color.validate();
-    return color;
-  }
-}
-
-interface CreateSexPayload {
-  id: Optional<number>;
-  name: Optional<string>;
-}
-
-export class Sex extends Entity<number> {
-  @IsString()
-  @IsOptional()
-  readonly name: Optional<string>;
-
-  constructor(payload: CreateSexPayload) {
-    super({ id: payload.id });
-
-    this.name = payload.name;
-  }
-
-  static async new(payload: CreateSexPayload): Promise<Sex> {
-    const sex = new Sex(payload);
-    await sex.validate();
-    return sex;
-  }
-}
+import { Breed, IBreed } from "./breed.entity";
+import { Color, IColor } from "./color.entity";
+import { ISex, Sex } from "./sex.entity";
 
 interface CreatePetPayload {
   id: Optional<number>;
@@ -93,7 +28,20 @@ interface CreatePetPayload {
   updatedAt: Optional<Date>;
 }
 
-export class Pet extends Entity<number> {
+export interface IPet {
+  readonly id: number;
+  readonly name: string;
+  readonly age: number;
+  readonly description: string;
+  readonly special: boolean;
+  readonly breed: IBreed;
+  readonly color: IColor;
+  readonly sex: ISex;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+}
+
+export class Pet extends Entity<number> implements IPet {
   @IsString()
   @IsNotEmpty()
   readonly name: string;

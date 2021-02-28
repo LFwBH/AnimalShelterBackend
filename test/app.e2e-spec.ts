@@ -53,10 +53,6 @@ describe("PetsController (e2e)", () => {
 
       return pets;
     },
-
-    // findOne: async (id: number) => null,
-    // remove: async (id: number) => {},
-    // update: async (id: number, pet: Pet) => {},
   };
 
   beforeEach(async () => {

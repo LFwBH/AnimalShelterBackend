@@ -1,11 +1,20 @@
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+
 import { Code } from "./Code";
 import { Nullable } from "./Nullable";
 
-export class CoreApiResponse<TData> {
-  public readonly code: number;
-  public readonly message: string;
-  public readonly timestamp: number;
-  public readonly data: Nullable<TData>;
+export interface ICoreApiResponse<TData> {
+  code: number;
+  message: string;
+  timestamp: number;
+  data: Nullable<TData>;
+}
+
+export class CoreApiResponse<TData> implements ICoreApiResponse<TData> {
+  @ApiProperty() readonly code: number;
+  @ApiProperty() readonly message: string;
+  @ApiProperty() readonly timestamp: number;
+  @ApiPropertyOptional() readonly data: Nullable<TData>;
 
   private constructor(code: number, message: string, data?: TData) {
     this.code = code;

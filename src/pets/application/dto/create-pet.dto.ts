@@ -1,11 +1,12 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsNumber, IsString } from "class-validator";
 
 export class CreatePetDto {
-  @IsString() readonly name: string;
-  @IsString() readonly description: string;
-  @IsBoolean() readonly special: boolean;
-  @IsNumber() readonly age: number;
-  @IsNumber() readonly breedId: number;
-  @IsNumber() readonly colorId: number;
-  @IsNumber() readonly sexId: number;
+  @ApiProperty() @IsString() readonly name: string;
+  @ApiProperty() @IsString() readonly description: string;
+  @ApiProperty() @IsBoolean() readonly special: boolean;
+  @ApiProperty() @IsNumber() readonly age: number;
+  @ApiProperty() @IsNumber() readonly breedId: number;
+  @ApiProperty() @IsNumber() readonly colorId: number;
+  @ApiProperty() @IsNumber() readonly sexId: number;
 }

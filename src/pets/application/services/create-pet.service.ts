@@ -1,6 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 
-import { Breed, Color, Pet, Sex } from "../../domain/entities/pet.entity";
+import { Breed } from "../../domain/entities/breed.entity";
+import { Color } from "../../domain/entities/color.entity";
+import { Pet } from "../../domain/entities/pet.entity";
+import { Sex } from "../../domain/entities/sex.entity";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
 import { PETS_REPOSITORY } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
