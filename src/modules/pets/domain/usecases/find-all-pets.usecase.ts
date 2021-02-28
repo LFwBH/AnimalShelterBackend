@@ -1,4 +1,4 @@
-import { UseCase } from "../../../common/UseCase";
+import { UseCase } from "../../../../common/UseCase";
 import { Pet } from "../entities/pet.entity";
 import { FindAllPetsPort } from "../ports/find-all-pets.port";
 

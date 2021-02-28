@@ -9,10 +9,10 @@ import * as faker from "faker";
 import * as request from "supertest";
 
 import { HttpExceptionFilter } from "../src/filters/http-exception.filter";
-import { Pet } from "../src/pets/domain/entities/pet.entity";
-import { PETS_REPOSITORY } from "../src/pets/domain/providers";
-import { PetsRepository } from "../src/pets/domain/repositories/pets.repository";
-import { PetsModule } from "../src/pets/pets.module";
+import { Pet } from "../src/modules/pets/domain/entities/pet.entity";
+import { PETS_REPOSITORY } from "../src/modules/pets/domain/providers";
+import { PetsRepository } from "../src/modules/pets/domain/repositories/pets.repository";
+import { PetsModule } from "../src/modules/pets/pets.module";
 import { PrismaService } from "../src/services/prisma.service";
 import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
 import getPetSchema from "./helpers/getPetSchema";

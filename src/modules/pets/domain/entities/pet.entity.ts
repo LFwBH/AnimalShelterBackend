@@ -9,8 +9,8 @@ import {
   ValidateNested,
 } from "class-validator";
 
-import { Entity } from "../../../common/Entity";
-import { Optional } from "../../../common/Optional";
+import { Entity } from "../../../../common/Entity";
+import { Optional } from "../../../../common/Optional";
 import { Breed, IBreed } from "./breed.entity";
 import { Color, IColor } from "./color.entity";
 import { ISex, Sex } from "./sex.entity";

@@ -1,8 +1,8 @@
 import { plainToClass } from "class-transformer";
 import { IsNumber, IsOptional } from "class-validator";
 
-import { Optional } from "../../../common/Optional";
-import { UseCaseValidatableAdapter } from "../../../common/UseCaseValidatableAdapter";
+import { Optional } from "../../../../common/Optional";
+import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
 import { FindAllPetsPort } from "../../domain/ports/find-all-pets.port";
 
 export class FindAllPetsAdapter

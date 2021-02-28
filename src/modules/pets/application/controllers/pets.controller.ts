@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Inject, Post, Query } from "@nestjs/common";
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
-import { ApiGenericResponse } from "../../../common/ApiGenericResponse";
-import { CoreApiResponse } from "../../../common/CoreApiResponse";
+import { ApiGenericResponse } from "../../../../common/ApiGenericResponse";
+import { CoreApiResponse } from "../../../../common/CoreApiResponse";
 import { Pet } from "../../domain/entities/pet.entity";
 import {
   CREATE_PET_USE_CASE,

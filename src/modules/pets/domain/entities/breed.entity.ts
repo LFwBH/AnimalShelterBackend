@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from "class-validator";
 
-import { Entity } from "../../../common/Entity";
-import { Optional } from "../../../common/Optional";
+import { Entity } from "../../../../common/Entity";
+import { Optional } from "../../../../common/Optional";
 
 interface CreateBreedPayload {
   id: Optional<number>;

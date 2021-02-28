@@ -26,6 +26,7 @@ export class ClassValidator {
         context: context || target.constructor.name,
         errors: [],
       };
+
       for (const error of errors) {
         details.errors.push({
           property: error.property,

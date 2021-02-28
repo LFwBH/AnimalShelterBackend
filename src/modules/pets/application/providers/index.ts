@@ -1,6 +1,6 @@
 import { Provider } from "@nestjs/common";
 
-import { TransactionalUseCaseWrapper } from "../../../common/TransactionalUseCaseWrapper";
+import { TransactionalUseCaseWrapper } from "../../../../common/TransactionalUseCaseWrapper";
 import {
   CREATE_PET_USE_CASE,
   FIND_ALL_PETS_USE_CASE,

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
-import { Optional } from "../../../common/Optional";
-import { PrismaService } from "../../../services/prisma.service";
+import { Optional } from "../../../../common/Optional";
+import { PrismaService } from "../../../../services/prisma.service";
 import { Pet } from "../../domain/entities/pet.entity";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { RepositoryPageOptions } from "../../domain/repositories/repository-page.options";

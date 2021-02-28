@@ -1,7 +1,7 @@
 import { plainToClass } from "class-transformer";
 import { IsBoolean, IsNumber, IsString } from "class-validator";
 
-import { UseCaseValidatableAdapter } from "../../../common/UseCaseValidatableAdapter";
+import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
 
 export class CreatePetAdapter

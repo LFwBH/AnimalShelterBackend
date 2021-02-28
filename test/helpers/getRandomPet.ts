@@ -1,9 +1,9 @@
 import * as faker from "faker";
 
-import { Breed } from "../../src/pets/domain/entities/breed.entity";
-import { Color } from "../../src/pets/domain/entities/color.entity";
-import { Pet } from "../../src/pets/domain/entities/pet.entity";
-import { Sex } from "../../src/pets/domain/entities/sex.entity";
+import { Breed } from "../../src/modules/pets/domain/entities/breed.entity";
+import { Color } from "../../src/modules/pets/domain/entities/color.entity";
+import { Pet } from "../../src/modules/pets/domain/entities/pet.entity";
+import { Sex } from "../../src/modules/pets/domain/entities/sex.entity";
 
 export default async function getRandomPet(
   overrides?: Partial<

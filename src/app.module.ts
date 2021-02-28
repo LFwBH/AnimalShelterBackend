@@ -3,7 +3,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
-import { PetsModule } from "./pets/pets.module";
+import { PetsModule } from "./modules/pets/pets.module";
 
 @Module({
   imports: [PetsModule],
