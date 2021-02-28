@@ -17,7 +17,7 @@ COPY src/ /home/node/src/
 COPY tsconfig.build.json /home/node/
 COPY tsconfig.json /home/node/
 
-RUN yarn build
+RUN yarn build && yarn workspaces focus --production
 
 # ------------------------------
 
