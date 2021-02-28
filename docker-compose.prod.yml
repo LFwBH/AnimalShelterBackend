@@ -6,29 +6,28 @@ services:
     restart: unless-stopped
     networks:
       - db
-    environment:
-      - NODE_ENV=production
     env_file:
       - .env.prod
     ports:
       - 8080:3000
+    depends_on:
+      - db
 
   db:
     image: postgres:13.2-alpine
     restart: unless-stopped
-    ports:
-      - 5432:5432
     networks:
       - db
     volumes:
-      - db:/var/lib/postgresql
+      - animal_shelter_db_data:/var/lib/postgresql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
 volumes:
-  db:
+  animal_shelter_db_data:
+    external: true
 
 networks:
   db:

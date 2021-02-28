@@ -4,12 +4,12 @@ services:
   server:
     build: .
     restart: unless-stopped
-    environment:
-      - NODE_ENV=development
     env_file:
       - .env
     ports:
       - 8080:3000
+    depends_on:
+      - db
 
   db:
     image: postgres:13.2-alpine
@@ -17,11 +17,12 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - db:/var/lib/postgresql
+      - animal_shelter_db_data:/var/lib/postgresql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
 volumes:
-  db:
+  animal_shelter_db_data:
+    external: true

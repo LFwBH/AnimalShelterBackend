@@ -14,6 +14,7 @@ COPY nest-cli.json /home/node/
 RUN yarn install --immutable
 
 COPY src/ /home/node/src/
+COPY scripts/ /home/node/scripts/
 COPY tsconfig.build.json /home/node/
 COPY tsconfig.json /home/node/
 
@@ -29,10 +30,13 @@ WORKDIR /home/node
 
 COPY --from=build /home/node/package.json /home/node/
 COPY --from=build /home/node/node_modules/ /home/node/node_modules/
+
 COPY --from=build /home/node/dist/ /home/node/dist/
 
-EXPOSE 3000
+COPY --from=build /home/node/prisma/ /home/node/prisma/
+COPY --from=build /home/node/scripts/ /home/node/scripts/
 
 USER node
+EXPOSE 3000
 
 CMD ["node", "dist/main"]

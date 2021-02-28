@@ -1,0 +1,4 @@
+.yarn/
+prisma/
+dist/
+node_modules/

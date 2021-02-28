@@ -3,6 +3,7 @@
 
 ### dotenv ###
 .env*
+!.env.example
 
 ### Linux ###
 *~
@@ -146,3 +147,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+*.tsbuildinfo
