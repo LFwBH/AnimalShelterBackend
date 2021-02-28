@@ -16,6 +16,8 @@ services:
   db:
     image: postgres:13.2-alpine
     restart: unless-stopped
+    ports:
+      - 5432:5432
     networks:
       - db
     volumes:
