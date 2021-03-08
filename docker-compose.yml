@@ -17,7 +17,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - animal_shelter_db_data:/var/lib/postgresql
+      - animal_shelter_db_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
