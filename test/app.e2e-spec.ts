@@ -37,6 +37,10 @@ describe("PetsController (e2e)", () => {
       });
     },
 
+    findById: async (id) => {
+      return getRandomPet({ id });
+    },
+
     findAll: async (page) => {
       const pets: Pet[] = [];
 
@@ -129,6 +133,19 @@ describe("PetsController (e2e)", () => {
     return request(app.getHttpServer())
       .get("/pets")
       .query({ take: 10 })
+      .expect(200)
+      .expect((res) => {
+        expect(schema).toBeValidSchema();
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toMatchSchema(schema);
+      });
+  });
+
+  it("/pets/1 (GET)", () => {
+    const schema = getResponseSchema(getPetSchema());
+
+    return request(app.getHttpServer())
+      .get("/pets/1")
       .expect(200)
       .expect((res) => {
         expect(schema).toBeValidSchema();

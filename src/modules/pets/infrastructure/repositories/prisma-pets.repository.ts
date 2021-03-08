@@ -49,9 +49,15 @@ export class PrismaPetsRepository implements PetsRepository {
     return Promise.all(pets.map((p) => PrismaPetsMapper.toEntityPet(p)));
   }
 
-  // async findOne(id: number): Promise<Nullable<Pet>> {}
-
-  // async remove(id: number): Promise<Pet> {}
-
-  // async update(id: number, pet: Pet): Promise<Pet> {}
+  async findById(id: number): Promise<Optional<Pet>> {
+    const pet = await this.prismaService.pet.findUnique({
+      where: { id_pet: id },
+      include: {
+        sex: true,
+        breed: true,
+        color: true,
+      },
+    });
+    return PrismaPetsMapper.toEntityPet(pet);
+  }
 }

@@ -6,4 +6,6 @@ export interface PetsRepository {
   create(pet: Pet): Promise<Pet>;
 
   findAll(page: Optional<RepositoryPageOptions>): Promise<Iterable<Pet>>;
+
+  findById(id: number): Promise<Optional<Pet>>;
 }
