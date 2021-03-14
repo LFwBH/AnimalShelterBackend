@@ -2,29 +2,24 @@ import { Injectable } from "@nestjs/common";
 
 import { Optional } from "../../../../common/Optional";
 import { PrismaService } from "../../../../services/prisma.service";
-import { Pet } from "../../domain/entities/pet.entity";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { RepositoryPageOptions } from "../../domain/repositories/repository-page.options";
+import { PetEntity } from "../entities/pet.entity";
 import { PrismaPetsMapper } from "../mappers/prisma-pets.mapper";
 
 @Injectable()
 export class PrismaPetsRepository implements PetsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(pet: Pet): Promise<Pet> {
+  async create(pet: PetEntity): Promise<PetEntity> {
     const prismaPet = await PrismaPetsMapper.toPrismaPet(pet);
-    const result = await this.prismaService.pet.create({
-      data: prismaPet,
-      include: {
-        sex: true,
-        breed: true,
-        color: true,
-      },
-    });
+    const result = await this.prismaService.pet.create({ data: prismaPet });
     return PrismaPetsMapper.toEntityPet(result);
   }
 
-  async findAll(page: Optional<RepositoryPageOptions>): Promise<Iterable<Pet>> {
+  async findAll(
+    page: Optional<RepositoryPageOptions>,
+  ): Promise<Iterable<PetEntity>> {
     const pets = await this.prismaService.pet.findMany({
       ...(page.take != null
         ? {
@@ -37,11 +32,6 @@ export class PrismaPetsRepository implements PetsRepository {
               : {}),
           }
         : {}),
-      include: {
-        sex: true,
-        breed: true,
-        color: true,
-      },
       orderBy: {
         created_at: "asc",
       },
@@ -49,14 +39,9 @@ export class PrismaPetsRepository implements PetsRepository {
     return Promise.all(pets.map((p) => PrismaPetsMapper.toEntityPet(p)));
   }
 
-  async findById(id: number): Promise<Optional<Pet>> {
+  async findById(id: number): Promise<Optional<PetEntity>> {
     const pet = await this.prismaService.pet.findUnique({
       where: { id_pet: id },
-      include: {
-        sex: true,
-        breed: true,
-        color: true,
-      },
     });
     return PrismaPetsMapper.toEntityPet(pet);
   }

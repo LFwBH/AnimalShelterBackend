@@ -7,27 +7,9 @@ export default function getPetSchema() {
       description: { type: "string" },
       special: { type: "boolean" },
       age: { type: "number" },
-      breed: {
-        type: "object",
-        properties: {
-          id: { type: "number" },
-          name: { type: "string" },
-        },
-      },
-      sex: {
-        type: "object",
-        properties: {
-          id: { type: "number" },
-          name: { type: "string" },
-        },
-      },
-      color: {
-        type: "object",
-        properties: {
-          id: { type: "number" },
-          name: { type: "string" },
-        },
-      },
+      kind: { type: "string" },
+      sex: { type: "string" },
+      color: { type: "string" },
       createdAt: { type: "string" },
       updatedAt: { type: "string" },
     },
@@ -37,7 +19,7 @@ export default function getPetSchema() {
       "description",
       "special",
       "age",
-      "breed",
+      "kind",
       "color",
       "sex",
       "createdAt",

@@ -1,13 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 
-import { Breed } from "../../domain/entities/breed.entity";
-import { Color } from "../../domain/entities/color.entity";
-import { Pet } from "../../domain/entities/pet.entity";
-import { Sex } from "../../domain/entities/sex.entity";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
 import { PETS_REPOSITORY } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
+import { PetEntity } from "../../infrastructure/entities/pet.entity";
 
 @Injectable()
 export class CreatePetService implements CreatePetUseCase {
@@ -15,20 +12,16 @@ export class CreatePetService implements CreatePetUseCase {
     @Inject(PETS_REPOSITORY) private readonly petsRepository: PetsRepository,
   ) {}
 
-  async execute(port: CreatePetPort): Promise<Pet> {
-    const breed = await Breed.new({ id: port.breedId, name: undefined });
-    const sex = await Sex.new({ id: port.sexId, name: undefined });
-    const color = await Color.new({ id: port.colorId, name: undefined });
-
-    const pet = await Pet.new({
+  async execute(port: CreatePetPort): Promise<PetEntity> {
+    const pet = await PetEntity.new({
       id: undefined,
       age: port.age,
       name: port.name,
       special: port.special,
       description: port.description,
-      breed,
-      sex,
-      color,
+      kind: port.kind,
+      sex: port.sex,
+      color: port.color,
       createdAt: undefined,
       updatedAt: undefined,
     });

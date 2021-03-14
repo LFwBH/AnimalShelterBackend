@@ -1,5 +1,5 @@
 import { plainToClass } from "class-transformer";
-import { IsBoolean, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsIn, IsNumber, IsString } from "class-validator";
 
 import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
@@ -7,12 +7,12 @@ import { CreatePetPort } from "../../domain/ports/create-pet.port";
 export class CreatePetAdapter
   extends UseCaseValidatableAdapter
   implements CreatePetPort {
+  @IsIn(["Dog", "Cat"]) readonly kind: "Dog" | "Cat";
+  @IsString() readonly color: string;
+  @IsIn(["Boy", "Girl"]) readonly sex: "Boy" | "Girl";
   @IsNumber() readonly age: number;
-  @IsNumber() readonly breedId: number;
-  @IsNumber() readonly colorId: number;
   @IsString() readonly description: string;
   @IsString() readonly name: string;
-  @IsNumber() readonly sexId: number;
   @IsBoolean() readonly special: boolean;
 
   public static async new(payload: CreatePetPort): Promise<CreatePetAdapter> {

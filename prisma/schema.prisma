@@ -10,28 +10,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Breed {
-  id_breed Int    @id @default(autoincrement())
-  name     String
-
-  @@map(name: "breed")
-  Pet Pet[]
+enum PetKind {
+  Dog
+  Cat
 }
 
-model Color {
-  id_color Int    @id @default(autoincrement())
-  name     String
-
-  @@map(name: "color")
-  Pet Pet[]
-}
-
-model Sex {
-  id_sex Int    @id @default(autoincrement())
-  name   String
-
-  @@map(name: "sex")
-  Pet Pet[]
+enum PetSex {
+  Boy
+  Girl
 }
 
 model Pet {
@@ -40,12 +26,9 @@ model Pet {
   description String
   special     Boolean  @default(false)
   age         Float
-  breed       Breed    @relation(fields: [id_breed], references: [id_breed])
-  id_breed    Int
-  color       Color    @relation(fields: [id_color], references: [id_color])
-  id_color    Int
-  sex         Sex      @relation(fields: [id_sex], references: [id_sex])
-  id_sex      Int
+  color       String
+  kind        PetKind
+  sex         PetSex
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 

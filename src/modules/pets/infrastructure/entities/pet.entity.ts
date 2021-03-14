@@ -1,47 +1,31 @@
 import {
   IsBoolean,
   IsDate,
-  IsInstance,
+  IsIn,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
 } from "class-validator";
 
 import { Entity } from "../../../../common/Entity";
 import { Optional } from "../../../../common/Optional";
-import { Breed, IBreed } from "./breed.entity";
-import { Color, IColor } from "./color.entity";
-import { ISex, Sex } from "./sex.entity";
+import { PetModel } from "../../domain/models/pet.model";
 
-interface CreatePetPayload {
+export interface CreatePetPayload {
   id: Optional<number>;
   name: string;
   age: number;
   description: string;
   special: boolean;
-  breed: Breed;
-  color: Color;
-  sex: Sex;
+  color: string;
+  kind: "Dog" | "Cat";
+  sex: "Boy" | "Girl";
   createdAt: Optional<Date>;
   updatedAt: Optional<Date>;
 }
 
-export interface IPet {
-  readonly id: number;
-  readonly name: string;
-  readonly age: number;
-  readonly description: string;
-  readonly special: boolean;
-  readonly breed: IBreed;
-  readonly color: IColor;
-  readonly sex: ISex;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
-}
-
-export class Pet extends Entity<number> implements IPet {
+export class PetEntity extends Entity<number> implements PetModel {
   @IsString()
   @IsNotEmpty()
   readonly name: string;
@@ -56,17 +40,15 @@ export class Pet extends Entity<number> implements IPet {
   @IsBoolean()
   readonly special: boolean;
 
-  @IsInstance(Breed)
-  @ValidateNested()
-  readonly breed: Breed;
+  @IsString()
+  @IsNotEmpty()
+  readonly color: string;
 
-  @IsInstance(Color)
-  @ValidateNested()
-  readonly color: Color;
+  @IsIn(["Boy", "Girl"])
+  readonly sex: "Boy" | "Girl";
 
-  @IsInstance(Sex)
-  @ValidateNested()
-  readonly sex: Sex;
+  @IsIn(["Dog", "Cat"])
+  readonly kind: "Dog" | "Cat";
 
   @IsDate()
   @IsOptional()
@@ -82,15 +64,15 @@ export class Pet extends Entity<number> implements IPet {
     this.age = payload.age;
     this.description = payload.description;
     this.special = payload.special;
-    this.breed = payload.breed;
+    this.kind = payload.kind;
     this.color = payload.color;
     this.sex = payload.sex;
     this.createdAt = payload.createdAt;
     this.updatedAt = payload.updatedAt;
   }
 
-  static async new(payload: CreatePetPayload): Promise<Pet> {
-    const pet = new Pet(payload);
+  static async new(payload: CreatePetPayload): Promise<PetEntity> {
+    const pet = new PetEntity(payload);
     await pet.validate();
     return pet;
   }

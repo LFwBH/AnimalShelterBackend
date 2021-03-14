@@ -1,6 +1,6 @@
 import { UseCase } from "../../../../common/UseCase";
-import { Pet } from "../entities/pet.entity";
+import { PetEntity } from "../../infrastructure/entities/pet.entity";
 import { FindAllPetsPort } from "../ports/find-all-pets.port";
 
 export interface FindAllPetsUseCase
-  extends UseCase<FindAllPetsPort, Iterable<Pet>> {}
+  extends UseCase<FindAllPetsPort, Iterable<PetEntity>> {}

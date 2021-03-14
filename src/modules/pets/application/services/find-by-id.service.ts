@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 
 import { Optional } from "../../../../common/Optional";
-import { Pet } from "../../domain/entities/pet.entity";
 import { PETS_REPOSITORY } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { FindPetByIdUseCase } from "../../domain/usecases/find-by-id.usecase";
+import { PetEntity } from "../../infrastructure/entities/pet.entity";
 
 @Injectable()
 export class FindPetByIdService implements FindPetByIdUseCase {
@@ -12,7 +12,7 @@ export class FindPetByIdService implements FindPetByIdUseCase {
     @Inject(PETS_REPOSITORY) private readonly petsRepository: PetsRepository,
   ) {}
 
-  async execute(port: number): Promise<Optional<Pet>> {
+  async execute(port: number): Promise<Optional<PetEntity>> {
     return this.petsRepository.findById(port);
   }
 }

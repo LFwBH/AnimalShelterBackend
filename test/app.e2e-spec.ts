@@ -9,14 +9,14 @@ import * as faker from "faker";
 import * as request from "supertest";
 
 import { HttpExceptionFilter } from "../src/filters/http-exception.filter";
-import { Pet } from "../src/modules/pets/domain/entities/pet.entity";
 import { PETS_REPOSITORY } from "../src/modules/pets/domain/providers";
 import { PetsRepository } from "../src/modules/pets/domain/repositories/pets.repository";
+import { PetEntity } from "../src/modules/pets/infrastructure/entities/pet.entity";
 import { PetsModule } from "../src/modules/pets/pets.module";
 import { PrismaService } from "../src/services/prisma.service";
 import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
 import getPetSchema from "./helpers/getPetSchema";
-import getRandomPet from "./helpers/getRandomPet";
+import getRandomPet, { getRandomOneOf } from "./helpers/getRandomPet";
 import getResponseSchema from "./helpers/getResponseSchema";
 
 describe("PetsController (e2e)", () => {
@@ -29,12 +29,7 @@ describe("PetsController (e2e)", () => {
 
   const mockPrismaPetsRepository: PetsRepository = {
     create: async (pet) => {
-      return getRandomPet({
-        ...pet,
-        colorId: pet.color.id,
-        breedId: pet.breed.id,
-        sexId: pet.sex.id,
-      });
+      return getRandomPet(pet);
     },
 
     findById: async (id) => {
@@ -42,7 +37,7 @@ describe("PetsController (e2e)", () => {
     },
 
     findAll: async (page) => {
-      const pets: Pet[] = [];
+      const pets: PetEntity[] = [];
 
       if (page.take != null) {
         for (
@@ -89,9 +84,9 @@ describe("PetsController (e2e)", () => {
         description: faker.lorem.sentence(),
         special: faker.random.boolean(),
         age: faker.random.number({ min: 1, max: 20 }),
-        breedId: faker.random.number({ min: 1, max: 10 }),
-        colorId: faker.random.number({ min: 1, max: 6 }),
-        sexId: faker.random.number({ min: 1, max: 2 }),
+        kind: getRandomOneOf(["Dog", "Cat"]),
+        sex: getRandomOneOf(["Boy", "Girl"]),
+        color: faker.internet.color(),
       })
       .expect(201)
       .expect((res) => {
