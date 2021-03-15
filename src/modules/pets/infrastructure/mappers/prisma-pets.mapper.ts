@@ -7,30 +7,46 @@ type PrismaPet = Prisma.PetGetPayload<unknown>;
 export class PrismaPetsMapper {
   static async toPrismaPet(pet: PetEntity): Promise<PrismaPet> {
     return {
-      id_pet: pet.id,
-      name: pet.name,
-      description: pet.description,
-      kind: pet.kind,
       age: pet.age,
-      sex: pet.sex,
+      archive_date: pet.archiveDate,
+      archived: pet.archived,
+      came_from: pet.cameFrom,
       color: pet.color,
-      special: pet.special,
       created_at: pet.createdAt,
+      description: pet.description,
+      has_gone: pet.hasGone,
+      id_pet: pet.id,
+      kind: pet.kind,
+      name: pet.name,
+      passport: pet.passport,
+      reviewed: pet.reviewed,
+      sex: pet.sex,
+      special: pet.special,
+      sterilization_date: pet.sterilizationDate,
+      sterilized: pet.sterilized,
       updated_at: pet.updatedAt,
     };
   }
 
   static async toEntityPet(pet: PrismaPet): Promise<PetEntity> {
     return PetEntity.new({
-      id: pet.id_pet,
-      name: pet.name,
-      description: pet.description,
       age: pet.age,
-      special: pet.special,
+      archived: pet.archived,
+      archiveDate: pet.archive_date,
+      cameFrom: pet.came_from,
       color: pet.color,
-      sex: pet.sex,
-      kind: pet.kind,
       createdAt: pet.created_at,
+      description: pet.description,
+      hasGone: pet.has_gone,
+      id: pet.id_pet,
+      kind: pet.kind,
+      name: pet.name,
+      passport: pet.passport,
+      reviewed: pet.reviewed,
+      sex: pet.sex,
+      special: pet.special,
+      sterilizationDate: pet.sterilization_date,
+      sterilized: pet.sterilized,
       updatedAt: pet.updated_at,
     });
   }

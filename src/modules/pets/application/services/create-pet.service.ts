@@ -13,19 +13,7 @@ export class CreatePetService implements CreatePetUseCase {
   ) {}
 
   async execute(port: CreatePetPort): Promise<PetEntity> {
-    const pet = await PetEntity.new({
-      id: undefined,
-      age: port.age,
-      name: port.name,
-      special: port.special,
-      description: port.description,
-      kind: port.kind,
-      sex: port.sex,
-      color: port.color,
-      createdAt: undefined,
-      updatedAt: undefined,
-    });
-
+    const pet = await PetEntity.new(port);
     return this.petsRepository.create(pet);
   }
 }

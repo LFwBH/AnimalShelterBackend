@@ -1,9 +1,4 @@
-export interface CreatePetPort {
-  readonly name: string;
-  readonly description: string;
-  readonly special: boolean;
-  readonly age: number;
-  readonly kind: "Dog" | "Cat";
-  readonly color: string;
-  readonly sex: "Boy" | "Girl";
-}
+import { PetModel } from "../models/pet.model";
+
+export interface CreatePetPort
+  extends Omit<PetModel, "id" | "createdAt" | "updatedAt"> {}

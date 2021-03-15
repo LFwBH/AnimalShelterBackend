@@ -21,16 +21,24 @@ enum PetSex {
 }
 
 model Pet {
-  id_pet      Int      @id @default(autoincrement())
-  name        String
-  description String
-  special     Boolean  @default(false)
-  age         Float
-  color       String
-  kind        PetKind
-  sex         PetSex
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  id_pet             Int       @id @default(autoincrement())
+  name               String
+  description        String
+  special            Boolean   @default(false)
+  passport           Boolean   @default(false)
+  has_gone           Boolean   @default(false)
+  archived           Boolean   @default(false)
+  archive_date       DateTime?
+  reviewed           Boolean   @default(false)
+  sterilized         Boolean   @default(false)
+  sterilization_date DateTime?
+  age                Float
+  color              String
+  kind               PetKind
+  sex                PetSex
+  came_from          String?
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @default(now()) @updatedAt
 
   @@map(name: "pet")
 }

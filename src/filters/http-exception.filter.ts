@@ -35,6 +35,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       `Error: ${errorResponse.message}`;
 
     Logger.error(message);
+    Logger.error(error.stack);
 
     response.status(status).json(errorResponse);
   }

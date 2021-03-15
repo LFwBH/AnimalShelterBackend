@@ -1,5 +1,12 @@
-import { plainToClass } from "class-transformer";
-import { IsBoolean, IsIn, IsNumber, IsString } from "class-validator";
+import { plainToClass, Transform } from "class-transformer";
+import {
+  IsBoolean,
+  IsDate,
+  IsIn,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
@@ -7,15 +14,63 @@ import { CreatePetPort } from "../../domain/ports/create-pet.port";
 export class CreatePetAdapter
   extends UseCaseValidatableAdapter
   implements CreatePetPort {
-  @IsIn(["Dog", "Cat"]) readonly kind: "Dog" | "Cat";
-  @IsString() readonly color: string;
-  @IsIn(["Boy", "Girl"]) readonly sex: "Boy" | "Girl";
-  @IsNumber() readonly age: number;
-  @IsString() readonly description: string;
-  @IsString() readonly name: string;
-  @IsBoolean() readonly special: boolean;
+  @IsBoolean()
+  @IsOptional()
+  readonly passport: boolean;
 
-  public static async new(payload: CreatePetPort): Promise<CreatePetAdapter> {
+  @IsBoolean()
+  @IsOptional()
+  readonly hasGone: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly archived: boolean;
+
+  @IsDate()
+  @IsOptional()
+  @Transform(({ value }) => new Date(value))
+  readonly archiveDate: Date;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly reviewed: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly sterilized: boolean;
+
+  @IsDate()
+  @IsOptional()
+  @Transform(({ value }) => new Date(value))
+  readonly sterilizationDate: Date;
+
+  @IsString()
+  @IsOptional()
+  readonly cameFrom: string;
+
+  @IsIn(["Dog", "Cat"])
+  readonly kind: "Dog" | "Cat";
+
+  @IsString()
+  readonly color: string;
+
+  @IsIn(["Boy", "Girl"])
+  readonly sex: "Boy" | "Girl";
+
+  @IsNumber()
+  readonly age: number;
+
+  @IsString()
+  readonly description: string;
+
+  @IsString()
+  readonly name: string;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly special: boolean;
+
+  public static async new(payload: unknown): Promise<CreatePetAdapter> {
     const adapter = plainToClass(CreatePetAdapter, payload);
     await adapter.validate();
     return adapter;
