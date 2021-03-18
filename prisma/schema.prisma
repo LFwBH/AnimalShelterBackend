@@ -40,5 +40,31 @@ model Pet {
   created_at         DateTime  @default(now())
   updated_at         DateTime  @default(now()) @updatedAt
 
+  PetPlacement PetPlacement[]
+
   @@map(name: "pet")
+}
+
+model Placement {
+  id_placement Int      @id @default(autoincrement())
+  name         String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+
+  PetPlacement PetPlacement[]
+
+  @@map(name: "placement")
+}
+
+model PetPlacement {
+  id_pet_placement Int       @id @default(autoincrement())
+  id_pet           Int
+  pet              Pet       @relation(fields: [id_pet], references: [id_pet])
+  id_placement     Int
+  placement        Placement @relation(fields: [id_placement], references: [id_placement])
+  description      String
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now()) @updatedAt
+
+  @@map(name: "pet_placement")
 }
