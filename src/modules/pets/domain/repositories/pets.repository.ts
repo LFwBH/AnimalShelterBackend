@@ -1,11 +1,11 @@
+import { RepositoryPageOptions } from "common/RepositoryPageOptions";
+
 import { Optional } from "../../../../common/Optional";
-import { PetEntity } from "../../infrastructure/entities/pet.entity";
-import { RepositoryPageOptions } from "./repository-page.options";
-
+import { PetModel } from "../models/pet.model";
 export interface PetsRepository {
-  create(pet: PetEntity): Promise<PetEntity>;
+  create(pet: Partial<PetModel>): Promise<PetModel>;
 
-  findAll(page: Optional<RepositoryPageOptions>): Promise<Iterable<PetEntity>>;
+  findAll(page: Optional<RepositoryPageOptions>): Promise<Iterable<PetModel>>;
 
-  findById(id: number): Promise<Optional<PetEntity>>;
+  findById(id: number): Promise<Optional<PetModel>>;
 }

@@ -1,4 +1,4 @@
-import { Nullable } from "./Nullable";
+import { Optional } from "./Optional";
 import { TransactionalUseCase, UseCase } from "./UseCase";
 
 export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
@@ -10,11 +10,12 @@ export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
     >,
   ) {}
 
-  public async execute(port: TUseCasePort): Promise<Nullable<TUseCaseResult>> {
-    let result: Nullable<TUseCaseResult> = null;
-    let error: Nullable<Error> = null;
+  public async execute(port: TUseCasePort): Promise<TUseCaseResult> {
+    let result: Optional<TUseCaseResult>;
+    let error: Optional<Error>;
 
     try {
+      // TODO: implement DB transactions
       result = await this.useCase.execute(port);
       this.useCase.onCommit?.(result, port);
     } catch (error_: unknown) {
@@ -26,6 +27,7 @@ export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
       throw error;
     }
 
-    return result;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return result!;
   }
 }

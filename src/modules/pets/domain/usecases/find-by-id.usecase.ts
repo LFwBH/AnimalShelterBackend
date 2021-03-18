@@ -1,6 +1,6 @@
 import { Optional } from "../../../../common/Optional";
 import { UseCase } from "../../../../common/UseCase";
-import { PetEntity } from "../../infrastructure/entities/pet.entity";
+import { PetModel } from "../models/pet.model";
 
 export interface FindPetByIdUseCase
-  extends UseCase<number, Optional<PetEntity>> {}
+  extends UseCase<number, Optional<PetModel>> {}

@@ -10,7 +10,7 @@ import {
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { CreatePetService } from "../services/create-pet.service";
 import { FindAllPetsService } from "../services/find-all-pets.service";
-import { FindPetByIdService } from "../services/find-by-id.service";
+import { FindPetByIdService } from "../services/find-pet-by-id.service";
 
 const providers: Provider[] = [
   {
@@ -23,19 +23,11 @@ const providers: Provider[] = [
   },
   {
     provide: FIND_ALL_PETS_USE_CASE,
-    useFactory: (petsRepository: PetsRepository) => {
-      const findAllPetsService = new FindAllPetsService(petsRepository);
-      return new TransactionalUseCaseWrapper(findAllPetsService);
-    },
-    inject: [PETS_REPOSITORY],
+    useClass: FindAllPetsService,
   },
   {
     provide: FIND_PET_BY_ID_USE_CASE,
-    useFactory: (petsRepository: PetsRepository) => {
-      const findPetByIdService = new FindPetByIdService(petsRepository);
-      return new TransactionalUseCaseWrapper(findPetByIdService);
-    },
-    inject: [PETS_REPOSITORY],
+    useClass: FindPetByIdService,
   },
 ];
 

@@ -1,17 +1,17 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 import {
   IsBoolean,
-  IsDateString,
+  IsDate,
   IsIn,
   IsNumber,
   IsOptional,
   IsString,
 } from "class-validator";
 import { Optional } from "common/Optional";
-import { PetModel } from "modules/pets/domain/models/pet.model";
+import { CreatePetPort } from "modules/pets/domain/ports/create-pet.port";
 
-export class CreatePetDto
-  implements Partial<Omit<PetModel, "sterilizationDate" | "archiveDate">> {
+export class CreatePetDto implements CreatePetPort {
   @ApiProperty()
   @IsString()
   readonly color: string;
@@ -35,21 +35,22 @@ export class CreatePetDto
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
-  readonly special: Optional<boolean>;
+  readonly special: boolean;
 
   @ApiProperty()
   @IsNumber()
   readonly age: number;
 
   @ApiPropertyOptional({ type: Date })
-  @IsDateString()
+  @IsDate()
   @IsOptional()
-  readonly archiveDate: Optional<string>;
+  @Transform(({ value }) => new Date(value))
+  readonly archiveDate: Optional<Date>;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
-  readonly archived: Optional<boolean>;
+  readonly archived: boolean;
 
   @ApiPropertyOptional({ type: String })
   @IsString()
@@ -59,25 +60,26 @@ export class CreatePetDto
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()
   @IsBoolean()
-  readonly hasGone: Optional<boolean>;
+  readonly hasGone: boolean;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
-  readonly passport: Optional<boolean>;
+  readonly passport: boolean;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
-  readonly reviewed: Optional<boolean>;
+  readonly reviewed: boolean;
 
   @ApiPropertyOptional({ type: Date })
-  @IsDateString()
+  @IsDate()
   @IsOptional()
-  readonly sterilizationDate: Optional<string>;
+  @Transform(({ value }) => new Date(value))
+  readonly sterilizationDate: Optional<Date>;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()
   @IsBoolean()
-  readonly sterilized: Optional<boolean>;
+  readonly sterilized: boolean;
 }

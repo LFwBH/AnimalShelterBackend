@@ -1,5 +1,7 @@
+import { Optional } from "./Optional";
+
 export interface UseCase<TUseCasePort, TUseCaseResult> {
-  execute(port?: TUseCasePort): Promise<TUseCaseResult>;
+  execute(port: Optional<TUseCasePort>): Promise<TUseCaseResult>;
 }
 
 export interface TransactionalUseCase<TUseCasePort, TUseCaseResult>

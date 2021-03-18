@@ -9,9 +9,11 @@ import {
 } from "@nestjs/common";
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
+import { PageOptionsAdapter } from "../../../../adapters/page-options.adapter";
 import { ApiGenericResponse } from "../../../../common/ApiGenericResponse";
 import { CoreApiResponse } from "../../../../common/CoreApiResponse";
 import { Optional } from "../../../../common/Optional";
+import { PetModel } from "../../domain/models/pet.model";
 import {
   CREATE_PET_USE_CASE,
   FIND_ALL_PETS_USE_CASE,
@@ -21,8 +23,6 @@ import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
 import { FindAllPetsUseCase } from "../../domain/usecases/find-all-pets.usecase";
 import { FindPetByIdUseCase } from "../../domain/usecases/find-by-id.usecase";
 import { CreatePetAdapter } from "../../infrastructure/adapters/create-pet.adapter";
-import { FindAllPetsAdapter } from "../../infrastructure/adapters/find-all-pets.adapter";
-import { PetEntity } from "../../infrastructure/entities/pet.entity";
 import { CreatePetDto } from "../dto/create-pet.dto";
 import { PetResponse } from "../swagger/PetResponse";
 
@@ -40,9 +40,7 @@ export class PetsController {
 
   @Post()
   @ApiCreatedResponse({ type: ApiGenericResponse(PetResponse) })
-  async create(
-    @Body() body: CreatePetDto,
-  ): Promise<CoreApiResponse<PetEntity>> {
+  async create(@Body() body: CreatePetDto): Promise<CoreApiResponse<PetModel>> {
     const adapter = await CreatePetAdapter.new(body);
     const pet = await this.createPetUseCase.execute(adapter);
     return CoreApiResponse.success(pet);
@@ -51,10 +49,10 @@ export class PetsController {
   @Get()
   @ApiOkResponse({ type: ApiGenericResponse([PetResponse]) })
   async findAll(
-    @Query("cursor") cursor: number,
-    @Query("take") take: number,
-  ): Promise<CoreApiResponse<Iterable<PetEntity>>> {
-    const adapter = await FindAllPetsAdapter.new({
+    @Query("cursor") cursor?: number,
+    @Query("take") take?: number,
+  ): Promise<CoreApiResponse<Iterable<PetModel>>> {
+    const adapter = await PageOptionsAdapter.new({
       cursor: cursor ? Number(cursor) : undefined,
       take: take ? Number(take) : undefined,
     });
@@ -66,7 +64,7 @@ export class PetsController {
   @ApiOkResponse({ type: ApiGenericResponse(PetResponse) })
   async findById(
     @Param("id") id: string,
-  ): Promise<CoreApiResponse<Optional<PetEntity>>> {
+  ): Promise<CoreApiResponse<Optional<PetModel>>> {
     const adapter = Number(id);
     const pet = await this.findPetByIdUseCase.execute(adapter);
     return CoreApiResponse.success(pet);

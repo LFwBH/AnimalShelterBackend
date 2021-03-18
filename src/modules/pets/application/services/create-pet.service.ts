@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { PetModel } from "modules/pets/domain/models/pet.model";
 
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
 import { PETS_REPOSITORY } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
-import { PetEntity } from "../../infrastructure/entities/pet.entity";
 
 @Injectable()
 export class CreatePetService implements CreatePetUseCase {
@@ -12,8 +12,7 @@ export class CreatePetService implements CreatePetUseCase {
     @Inject(PETS_REPOSITORY) private readonly petsRepository: PetsRepository,
   ) {}
 
-  async execute(port: CreatePetPort): Promise<PetEntity> {
-    const pet = await PetEntity.new(port);
-    return this.petsRepository.create(pet);
+  execute(port: CreatePetPort): Promise<PetModel> {
+    return this.petsRepository.create(port);
   }
 }

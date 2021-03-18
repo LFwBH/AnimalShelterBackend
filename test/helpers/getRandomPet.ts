@@ -1,10 +1,11 @@
 import * as faker from "faker";
 
+import { PetModel } from "../../src/modules/pets/domain/models/pet.model";
 import { PetEntity } from "../../src/modules/pets/infrastructure/entities/pet.entity";
 
 export default async function getRandomPet(
   overrides?: Partial<PetEntity>,
-): Promise<PetEntity> {
+): Promise<PetModel> {
   return PetEntity.new({
     age: overrides?.age ?? faker.random.number(),
     archived: overrides?.archived ?? faker.random.boolean(),

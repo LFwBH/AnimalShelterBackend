@@ -35,7 +35,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       `Error: ${errorResponse.message}`;
 
     Logger.error(message);
-    Logger.error(error.stack);
+    Logger.debug(error.stack);
 
     response.status(status).json(errorResponse);
   }
@@ -48,7 +48,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       errorResponse = CoreApiResponse.error(
         error.getStatus(),
         error.message,
-        null,
+        error.getResponse(),
       );
     }
     if (error instanceof UnauthorizedException) {

@@ -1,4 +1,4 @@
-import { plainToClass, Transform } from "class-transformer";
+import { plainToClass } from "class-transformer";
 import {
   IsBoolean,
   IsDate,
@@ -28,7 +28,6 @@ export class CreatePetAdapter
 
   @IsDate()
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
   readonly archiveDate: Date;
 
   @IsBoolean()
@@ -41,7 +40,6 @@ export class CreatePetAdapter
 
   @IsDate()
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
   readonly sterilizationDate: Date;
 
   @IsString()
@@ -70,7 +68,7 @@ export class CreatePetAdapter
   @IsOptional()
   readonly special: boolean;
 
-  public static async new(payload: unknown): Promise<CreatePetAdapter> {
+  static async new(payload: CreatePetPort): Promise<CreatePetAdapter> {
     const adapter = plainToClass(CreatePetAdapter, payload);
     await adapter.validate();
     return adapter;

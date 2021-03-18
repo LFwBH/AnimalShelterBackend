@@ -13,7 +13,7 @@ import { Entity } from "../../../../common/Entity";
 import { Optional } from "../../../../common/Optional";
 import { PetModel } from "../../domain/models/pet.model";
 
-export class PetEntity extends Entity<number> implements PetModel {
+export class PetEntity extends Entity implements PetModel {
   @IsString()
   @IsNotEmpty()
   readonly name: string;
@@ -41,11 +41,11 @@ export class PetEntity extends Entity<number> implements PetModel {
 
   @IsDate()
   @IsOptional()
-  readonly createdAt: Optional<Date>;
+  readonly createdAt: Date;
 
   @IsDate()
   @IsOptional()
-  readonly updatedAt: Optional<Date>;
+  readonly updatedAt: Date;
 
   @IsBoolean()
   @IsOptional()

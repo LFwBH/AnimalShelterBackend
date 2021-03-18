@@ -1,12 +1,13 @@
-import { Module } from "@nestjs/common";
-import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
+import { Module, ValidationPipe } from "@nestjs/common";
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { PlacementsModule } from "modules/placements/placements.module";
 
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
 import { PetsModule } from "./modules/pets/pets.module";
 
 @Module({
-  imports: [PetsModule],
+  imports: [PetsModule, PlacementsModule],
   controllers: [],
   providers: [
     {
@@ -16,6 +17,10 @@ import { PetsModule } from "./modules/pets/pets.module";
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpLoggingInterceptor,
+    },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true }),
     },
   ],
 })

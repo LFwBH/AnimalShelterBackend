@@ -9,9 +9,9 @@ import * as faker from "faker";
 import * as request from "supertest";
 
 import { HttpExceptionFilter } from "../src/filters/http-exception.filter";
+import { PetModel } from "../src/modules/pets/domain/models/pet.model";
 import { PETS_REPOSITORY } from "../src/modules/pets/domain/providers";
 import { PetsRepository } from "../src/modules/pets/domain/repositories/pets.repository";
-import { PetEntity } from "../src/modules/pets/infrastructure/entities/pet.entity";
 import { PetsModule } from "../src/modules/pets/pets.module";
 import { PrismaService } from "../src/services/prisma.service";
 import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
@@ -37,9 +37,9 @@ describe("PetsController (e2e)", () => {
     },
 
     findAll: async (page) => {
-      const pets: PetEntity[] = [];
+      const pets: PetModel[] = [];
 
-      if (page.take != null) {
+      if (page?.take != null) {
         for (
           let i = page.cursor ?? 0;
           i < (page.cursor ?? 0) + page.take;

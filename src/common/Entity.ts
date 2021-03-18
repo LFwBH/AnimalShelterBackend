@@ -5,10 +5,10 @@ import { Code } from "./Code";
 import { Exception } from "./Exception";
 import { Optional } from "./Optional";
 
-export class Entity<TIdentifier extends string | number> {
+export class Entity {
   @IsNumber()
   @IsOptional()
-  readonly id: Optional<TIdentifier>;
+  readonly id: number;
 
   public async validate(): Promise<void> {
     const details: Optional<ClassValidationDetails> = await ClassValidator.validate(
