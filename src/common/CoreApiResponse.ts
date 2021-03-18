@@ -23,7 +23,7 @@ export class CoreApiResponse<TData> implements ICoreApiResponse<TData> {
     this.timestamp = Date.now();
   }
 
-  public static success<TData>(
+  static success<TData>(
     data?: TData,
     message?: string,
   ): CoreApiResponse<TData> {
@@ -33,7 +33,7 @@ export class CoreApiResponse<TData> implements ICoreApiResponse<TData> {
     return new CoreApiResponse(resultCode, resultMessage, data);
   }
 
-  public static error<TData>(
+  static error<TData>(
     code?: number,
     message?: string,
     data?: TData,

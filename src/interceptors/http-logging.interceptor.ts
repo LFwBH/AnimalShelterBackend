@@ -13,7 +13,7 @@ import { CoreApiResponse } from "../common/CoreApiResponse";
 
 @Injectable()
 export class HttpLoggingInterceptor implements NestInterceptor {
-  public intercept(
+  intercept(
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<CoreApiResponse<void>> {

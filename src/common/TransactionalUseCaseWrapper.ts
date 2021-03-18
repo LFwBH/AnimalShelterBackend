@@ -10,7 +10,7 @@ export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
     >,
   ) {}
 
-  public async execute(port: TUseCasePort): Promise<TUseCaseResult> {
+  async execute(port: TUseCasePort): Promise<TUseCaseResult> {
     let result: Optional<TUseCaseResult>;
     let error: Optional<Error>;
 

@@ -8,11 +8,11 @@ export function ApiGenericResponse<T extends ClassType>(
   ResourceType: T | T[],
 ): ClassType {
   class ApiResponse implements ICoreApiResponse<T> {
-    @ApiProperty() public readonly code: number;
-    @ApiProperty() public readonly message: string;
-    @ApiProperty() public readonly timestamp: number;
+    @ApiProperty() readonly code: number;
+    @ApiProperty() readonly message: string;
+    @ApiProperty() readonly timestamp: number;
     @ApiPropertyOptional({ type: ResourceType })
-    public readonly data: Nullable<T>;
+    readonly data: Nullable<T>;
   }
 
   return ApiResponse;

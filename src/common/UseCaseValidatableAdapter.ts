@@ -4,7 +4,7 @@ import { Exception } from "./Exception";
 import { Optional } from "./Optional";
 
 export class UseCaseValidatableAdapter {
-  public async validate(): Promise<void> {
+  async validate(): Promise<void> {
     const details: Optional<ClassValidationDetails> = await ClassValidator.validate(
       this,
     );

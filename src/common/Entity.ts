@@ -10,7 +10,7 @@ export class Entity {
   @IsOptional()
   readonly id: number;
 
-  public async validate(): Promise<void> {
+  async validate(): Promise<void> {
     const details: Optional<ClassValidationDetails> = await ClassValidator.validate(
       this,
     );

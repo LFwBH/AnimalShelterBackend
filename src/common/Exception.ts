@@ -8,9 +8,9 @@ export type CreateExceptionPayload<TData> = {
 };
 
 export class Exception<TData> extends Error {
-  public readonly code: number;
-  public readonly status: number;
-  public readonly data: Optional<TData>;
+  readonly code: number;
+  readonly status: number;
+  readonly data: Optional<TData>;
 
   private constructor(code: CodeDescription, message?: string, data?: TData) {
     super();
@@ -24,9 +24,7 @@ export class Exception<TData> extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  public static new<TData>(
-    payload: CreateExceptionPayload<TData>,
-  ): Exception<TData> {
+  static new<TData>(payload: CreateExceptionPayload<TData>): Exception<TData> {
     return new Exception(payload.code, payload.message, payload.data);
   }
 }

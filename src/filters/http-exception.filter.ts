@@ -14,7 +14,7 @@ import { Exception } from "../common/Exception";
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  public catch(error: Error, host: ArgumentsHost): void {
+  catch(error: Error, host: ArgumentsHost): void {
     const request = host.switchToHttp().getRequest<Request>();
     const response = host.switchToHttp().getResponse<Response>();
 
