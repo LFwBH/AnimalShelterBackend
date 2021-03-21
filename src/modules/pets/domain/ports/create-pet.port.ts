@@ -1,4 +1,5 @@
 import { PetModel } from "../models/pet.model";
 
-export interface CreatePetPort
-  extends Omit<PetModel, "id" | "createdAt" | "updatedAt" | "placements"> {}
+type FieldsToOmit = "id" | "createdAt" | "updatedAt" | "placements";
+
+export interface CreatePetPort extends Omit<PetModel, FieldsToOmit> {}

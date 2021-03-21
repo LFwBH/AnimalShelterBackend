@@ -10,7 +10,7 @@ import {
 } from "../../domain/providers";
 import { CreatePlacementUseCase } from "../../domain/usecases/create-placement.usecase";
 import { FindAllPlacementsUseCase } from "../../domain/usecases/find-all-placements.usecase";
-import { CreatePlacementAdapter } from "../../infrastructure/adapters/create-placement.adapter";
+import { CreatePlacementAdapter } from "../adapters/create-placement.adapter";
 import { CreatePlacementDto } from "../dto/create-placement.dto";
 import { CreatePlacementResponse } from "../swagger/create-placement.response";
 import { FindAllPlacementsResponse } from "../swagger/find-all-placements.response";

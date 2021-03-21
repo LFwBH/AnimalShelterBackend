@@ -23,10 +23,12 @@ import { AddPlacementUseCase } from "../../domain/usecases/add-placement.usecase
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
 import { FindAllPetsUseCase } from "../../domain/usecases/find-all-pets.usecase";
 import { FindPetByIdUseCase } from "../../domain/usecases/find-by-id.usecase";
-import { AddPlacementAdapter } from "../../infrastructure/adapters/add-placement.adapter";
-import { CreatePetAdapter } from "../../infrastructure/adapters/create-pet.adapter";
+import { AddPlacementAdapter } from "../adapters/add-placement.adapter";
+import { CreatePetAdapter } from "../adapters/create-pet.adapter";
+import { PetFilterAdapter } from "../adapters/pet-filter.adapter";
 import { AddPlacementDto } from "../dto/add-placement.dto";
 import { CreatePetDto } from "../dto/create-pet.dto";
+import { PetFilterDto } from "../dto/pet-filter.dto";
 import { AddPlacementResponse } from "../swagger/add-placement.response";
 import { CreatePetResponse } from "../swagger/create-pet.response";
 import { FindAllPetsResponse } from "../swagger/find-all-pets.response";
@@ -69,12 +71,23 @@ export class PetsController {
   async findAll(
     @Query("cursor") cursor?: number,
     @Query("take") take?: number,
+    @Query("filter") filter?: PetFilterDto,
   ): Promise<CoreApiResponse<Iterable<PetModel>>> {
-    const adapter = await PageOptionsAdapter.new({
+    const pageOptionsAdapter = await PageOptionsAdapter.new({
       cursor: cursor ? Number(cursor) : undefined,
       take: take ? Number(take) : undefined,
     });
-    const pets = await this.findAllPetsUseCase.execute(adapter);
+
+    let filterOptionsAdapter: Optional<PetFilterAdapter>;
+
+    if (filter) {
+      filterOptionsAdapter = await PetFilterAdapter.new(filter);
+    }
+
+    const pets = await this.findAllPetsUseCase.execute({
+      ...pageOptionsAdapter,
+      filter: filterOptionsAdapter,
+    });
     return CoreApiResponse.success(pets);
   }
 

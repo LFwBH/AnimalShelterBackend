@@ -4,6 +4,7 @@ import { Optional } from "../../../../common/Optional";
 import { RepositoryPageOptions } from "../../../../common/RepositoryPageOptions";
 import { PrismaService } from "../../../../services/prisma.service";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
+import { PetFilterPort } from "../../domain/ports/pet-filter.port";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { PetEntity } from "../entities/pet.entity";
 import { PrismaPetsMapper } from "../mappers/prisma-pets.mapper";
@@ -21,7 +22,7 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async findAll(
-    page: Optional<RepositoryPageOptions>,
+    page: Optional<RepositoryPageOptions & { filter: Optional<PetFilterPort> }>,
   ): Promise<Iterable<PetEntity>> {
     const findManyArgs: Prisma.SelectSubset<
       Prisma.PetFindManyArgs & { include: { PetPlacement: true } },
@@ -38,6 +39,25 @@ export class PrismaPetsRepository implements PetsRepository {
     if (page?.cursor != null) {
       findManyArgs.skip = 1;
       findManyArgs.cursor = { id_pet: page.cursor };
+    }
+
+    if (page?.filter) {
+      findManyArgs.where = {
+        AND: (Object.keys(page.filter) as Array<keyof PetFilterPort>).reduce(
+          (acc, key) => {
+            const value = page.filter?.[key];
+
+            if (typeof value === "string") {
+              acc[key] = { contains: value };
+            } else {
+              acc[key] = value;
+            }
+
+            return acc;
+          },
+          {} as NonNullable<typeof findManyArgs.where>,
+        ),
+      };
     }
 
     const pets = await this.prismaService.pet.findMany(findManyArgs);

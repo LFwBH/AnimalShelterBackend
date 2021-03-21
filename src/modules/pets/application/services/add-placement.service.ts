@@ -4,10 +4,10 @@ import { Code } from "../../../../common/Code";
 import { Exception } from "../../../../common/Exception";
 import { PetModel } from "../../domain/models/pet.model";
 import { AddPlacementPort } from "../../domain/ports/add-placement.port";
+import { PlacementRepositoryPort } from "../../domain/ports/placement-repository.port";
 import { PETS_REPOSITORY, PLACEMENTS_REPOSITORY } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { AddPlacementUseCase } from "../../domain/usecases/add-placement.usecase";
-import { PlacementRepositoryPort } from "../ports/placement-repository.port";
 
 @Injectable()
 export class AddPlacementService implements AddPlacementUseCase {

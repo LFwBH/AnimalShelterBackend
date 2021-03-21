@@ -2,7 +2,7 @@ import { Provider } from "@nestjs/common";
 
 import { TransactionalUseCaseWrapper } from "../../../../common/TransactionalUseCaseWrapper";
 import { PrismaService } from "../../../../services/prisma.service";
-import { PlacementRepositoryAdapter } from "../../../placements/infrastructure/adapters/placement-repository.adapter";
+import { PlacementRepositoryAdapter } from "../../../placements/application/adapters/placement-repository.adapter";
 import {
   ADD_PLACEMENT_USE_CASE,
   CREATE_PET_USE_CASE,
