@@ -7,10 +7,12 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from "class-validator";
 
 import { Entity } from "../../../../common/Entity";
 import { Optional } from "../../../../common/Optional";
+import { PetPlacementEntity } from "../../../placements/infrastructure/entities/pet-placement.entity";
 import { PetModel } from "../../domain/models/pet.model";
 
 export class PetEntity extends Entity implements PetModel {
@@ -78,6 +80,10 @@ export class PetEntity extends Entity implements PetModel {
   @IsOptional()
   @IsString()
   readonly cameFrom: string;
+
+  @IsOptional()
+  @ValidateNested()
+  readonly placements: PetPlacementEntity[];
 
   static async new(payload: Partial<PetModel>): Promise<PetEntity> {
     const pet = plainToClass(PetEntity, payload);

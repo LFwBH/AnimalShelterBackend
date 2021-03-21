@@ -1,3 +1,4 @@
+import { PrismaService } from "../services/prisma.service";
 import { Optional } from "./Optional";
 import { TransactionalUseCase, UseCase } from "./UseCase";
 
@@ -8,6 +9,7 @@ export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
       TUseCasePort,
       TUseCaseResult
     >,
+    private readonly prismaService: PrismaService,
   ) {}
 
   async execute(port: TUseCasePort): Promise<TUseCaseResult> {
@@ -15,11 +17,13 @@ export class TransactionalUseCaseWrapper<TUseCasePort, TUseCaseResult>
     let error: Optional<Error>;
 
     try {
-      // TODO: implement DB transactions
+      await this.prismaService.$queryRaw`BEGIN`;
       result = await this.useCase.execute(port);
+      await this.prismaService.$queryRaw`COMMIT`;
       this.useCase.onCommit?.(result, port);
     } catch (error_: unknown) {
       error = error_ as Error;
+      await this.prismaService.$queryRaw`ROLLBACK`;
       this.useCase.onRollback?.(error, port);
     }
 

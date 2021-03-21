@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { RepositoryPageOptions } from "common/RepositoryPageOptions";
-import { PetModel } from "modules/pets/domain/models/pet.model";
 
 import { Optional } from "../../../../common/Optional";
+import { RepositoryPageOptions } from "../../../../common/RepositoryPageOptions";
 import { PrismaService } from "../../../../services/prisma.service";
+import { CreatePetPort } from "../../domain/ports/create-pet.port";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { PetEntity } from "../entities/pet.entity";
 import { PrismaPetsMapper } from "../mappers/prisma-pets.mapper";
@@ -13,7 +13,7 @@ import { Prisma } from ".prisma/client";
 export class PrismaPetsRepository implements PetsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(pet: Partial<PetModel>): Promise<PetEntity> {
+  async create(pet: CreatePetPort): Promise<PetEntity> {
     const petEntity = await PetEntity.new(pet);
     const prismaPet = await PrismaPetsMapper.toPrismaPet(petEntity);
     const result = await this.prismaService.pet.create({ data: prismaPet });
@@ -23,8 +23,12 @@ export class PrismaPetsRepository implements PetsRepository {
   async findAll(
     page: Optional<RepositoryPageOptions>,
   ): Promise<Iterable<PetEntity>> {
-    const findManyArgs: Prisma.PetFindManyArgs = {
+    const findManyArgs: Prisma.SelectSubset<
+      Prisma.PetFindManyArgs & { include: { PetPlacement: true } },
+      Prisma.PetFindManyArgs
+    > = {
       orderBy: { created_at: "asc" },
+      include: { PetPlacement: true },
     };
 
     if (page?.take != null) {
@@ -38,12 +42,18 @@ export class PrismaPetsRepository implements PetsRepository {
 
     const pets = await this.prismaService.pet.findMany(findManyArgs);
 
-    return Promise.all(pets.map((p) => PrismaPetsMapper.toEntityPet(p)));
+    return Promise.all(
+      pets.map((p) => PrismaPetsMapper.toEntityPetWithPlacements(p)),
+    );
   }
 
   async findById(id: number): Promise<Optional<PetEntity>> {
-    const findUniqueArgs: Prisma.PetFindUniqueArgs = {
+    const findUniqueArgs: Prisma.SelectSubset<
+      Prisma.PetFindUniqueArgs & { include: { PetPlacement: true } },
+      Prisma.PetFindUniqueArgs
+    > = {
       where: { id_pet: id },
+      include: { PetPlacement: true },
     };
 
     const pet = await this.prismaService.pet.findUnique(findUniqueArgs);
@@ -52,6 +62,6 @@ export class PrismaPetsRepository implements PetsRepository {
       return;
     }
 
-    return PrismaPetsMapper.toEntityPet(pet);
+    return PrismaPetsMapper.toEntityPetWithPlacements(pet);
   }
 }

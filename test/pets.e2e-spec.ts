@@ -22,7 +22,10 @@ import getResponseSchema from "./helpers/getResponseSchema";
 describe("PetsController (e2e)", () => {
   let app: INestApplication;
 
-  const mockPrismaService: OnModuleInit & OnModuleDestroy = {
+  const mockPrismaService: OnModuleInit &
+    OnModuleDestroy &
+    Record<string, Function> = {
+    $queryRaw: () => {},
     onModuleDestroy: async () => {},
     onModuleInit: async () => {},
   };

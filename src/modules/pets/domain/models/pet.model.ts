@@ -1,4 +1,5 @@
-import { Optional } from "common/Optional";
+import { Optional } from "../../../../common/Optional";
+import { PetPlacementModel } from "../../../placements/domain/models/pet-placement.model";
 
 export interface PetModel {
   readonly id: number;
@@ -19,4 +20,5 @@ export interface PetModel {
   readonly cameFrom: Optional<string>;
   readonly createdAt: Date;
   readonly updatedAt: Date;
+  readonly placements: PetPlacementModel[];
 }

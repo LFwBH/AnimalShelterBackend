@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+import { PetPlacementResponse } from "../../../placements/application/swagger/pet-placement.response";
 import { PetModel } from "../../domain/models/pet.model";
 
 export class PetResponse implements PetModel {
@@ -56,4 +57,7 @@ export class PetResponse implements PetModel {
 
   @ApiProperty({ type: Date })
   readonly updatedAt: Date;
+
+  @ApiProperty({ type: [PetPlacementResponse] })
+  readonly placements: PetPlacementResponse[];
 }

@@ -2,7 +2,6 @@ import { Body, Controller, Get, Inject, Post, Query } from "@nestjs/common";
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { PageOptionsAdapter } from "../../../../adapters/page-options.adapter";
-import { ApiGenericResponse } from "../../../../common/ApiGenericResponse";
 import { CoreApiResponse } from "../../../../common/CoreApiResponse";
 import { PlacementModel } from "../../domain/models/placement.model";
 import {
@@ -13,7 +12,8 @@ import { CreatePlacementUseCase } from "../../domain/usecases/create-placement.u
 import { FindAllPlacementsUseCase } from "../../domain/usecases/find-all-placements.usecase";
 import { CreatePlacementAdapter } from "../../infrastructure/adapters/create-placement.adapter";
 import { CreatePlacementDto } from "../dto/create-placement.dto";
-import { PlacementResponse } from "../swagger/PlacementResponse";
+import { CreatePlacementResponse } from "../swagger/create-placement.response";
+import { FindAllPlacementsResponse } from "../swagger/find-all-placements.response";
 
 @ApiTags("placements")
 @Controller("placements")
@@ -26,7 +26,7 @@ export class PlacementsController {
   ) {}
 
   @Post()
-  @ApiCreatedResponse({ type: ApiGenericResponse(PlacementResponse) })
+  @ApiCreatedResponse({ type: CreatePlacementResponse })
   async create(
     @Body() body: CreatePlacementDto,
   ): Promise<CoreApiResponse<PlacementModel>> {
@@ -36,7 +36,7 @@ export class PlacementsController {
   }
 
   @Get()
-  @ApiOkResponse({ type: ApiGenericResponse([PlacementResponse]) })
+  @ApiOkResponse({ type: FindAllPlacementsResponse })
   async findAll(
     @Query("cursor") cursor?: number,
     @Query("take") take?: number,

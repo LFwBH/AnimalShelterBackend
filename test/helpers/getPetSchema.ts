@@ -1,4 +1,4 @@
-import { PetResponse } from "modules/pets/application/swagger/PetResponse";
+import { PetResponse } from "modules/pets/application/swagger/pet.response";
 
 export default function getPetSchema() {
   return {

@@ -7,5 +7,6 @@ import { providers as infrastructureProviders } from "./infrastructure/providers
 @Module({
   controllers: [PlacementsController],
   providers: [...infrastructureProviders, ...applicationProviders],
+  exports: [...infrastructureProviders],
 })
 export class PlacementsModule {}
