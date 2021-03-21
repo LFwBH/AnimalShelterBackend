@@ -7,7 +7,7 @@ export interface PetModel {
   readonly description: string;
   readonly special: boolean;
   readonly passport: boolean;
-  readonly hasGone: boolean;
+  readonly dead: boolean;
   readonly archived: boolean;
   readonly archiveDate: Optional<Date>;
   readonly reviewed: boolean;

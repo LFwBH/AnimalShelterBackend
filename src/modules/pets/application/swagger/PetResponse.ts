@@ -7,7 +7,7 @@ export class PetResponse implements PetModel {
   readonly passport: boolean;
 
   @ApiProperty()
-  readonly hasGone: boolean;
+  readonly dead: boolean;
 
   @ApiProperty()
   readonly archived: boolean;

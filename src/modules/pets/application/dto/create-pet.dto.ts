@@ -60,7 +60,7 @@ export class CreatePetDto implements CreatePetPort {
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()
   @IsBoolean()
-  readonly hasGone: boolean;
+  readonly dead: boolean;
 
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()

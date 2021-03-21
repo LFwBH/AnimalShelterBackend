@@ -20,7 +20,7 @@ export class CreatePetAdapter
 
   @IsBoolean()
   @IsOptional()
-  readonly hasGone: boolean;
+  readonly dead: boolean;
 
   @IsBoolean()
   @IsOptional()

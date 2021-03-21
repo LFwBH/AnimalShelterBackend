@@ -14,7 +14,7 @@ export default async function getRandomPet(
     color: overrides?.color ?? faker.internet.color(),
     createdAt: overrides?.createdAt ?? faker.date.recent(),
     description: overrides?.description ?? faker.lorem.sentence(),
-    hasGone: overrides?.hasGone ?? faker.random.boolean(),
+    dead: overrides?.dead ?? faker.random.boolean(),
     id: overrides?.id ?? faker.random.number(),
     kind: overrides?.kind ?? getRandomOneOf(["Dog", "Cat"]),
     name: overrides?.name ?? faker.name.findName(),

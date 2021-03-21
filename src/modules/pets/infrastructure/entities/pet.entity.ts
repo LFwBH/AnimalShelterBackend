@@ -53,7 +53,7 @@ export class PetEntity extends Entity implements PetModel {
 
   @IsBoolean()
   @IsOptional()
-  readonly hasGone: boolean;
+  readonly dead: boolean;
 
   @IsBoolean()
   @IsOptional()
