@@ -68,3 +68,14 @@ model PetPlacement {
 
   @@map(name: "pet_placement")
 }
+
+model Location {
+  id_location Int      @id @default(autoincrement())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  image       String?
+
+  @@map(name: "location")
+}
