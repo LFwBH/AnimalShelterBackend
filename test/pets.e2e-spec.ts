@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { APP_FILTER } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
-import * as faker from "faker";
+import * as faker from "faker/locale/en";
 import * as request from "supertest";
 
 import { HttpExceptionFilter } from "../src/filters/http-exception.filter";
@@ -13,11 +13,13 @@ import { PetModel } from "../src/modules/pets/domain/models/pet.model";
 import { PETS_REPOSITORY } from "../src/modules/pets/domain/providers";
 import { PetsRepository } from "../src/modules/pets/domain/repositories/pets.repository";
 import { PetsModule } from "../src/modules/pets/pets.module";
+import { LOGGER_SERVICE } from "../src/providers";
 import { PrismaService } from "../src/services/prisma.service";
 import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
 import getPetSchema from "./helpers/getPetSchema";
 import getRandomPet, { getRandomOneOf } from "./helpers/getRandomPet";
 import getResponseSchema from "./helpers/getResponseSchema";
+import { LoggerMock } from "./mocks/logger.mock";
 
 describe("PetsController (e2e)", () => {
   let app: INestApplication;
@@ -64,6 +66,10 @@ describe("PetsController (e2e)", () => {
         {
           provide: APP_FILTER,
           useClass: HttpExceptionFilter,
+        },
+        {
+          provide: LOGGER_SERVICE,
+          useClass: LoggerMock,
         },
       ],
     })

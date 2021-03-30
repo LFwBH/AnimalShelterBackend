@@ -1,4 +1,4 @@
-import * as faker from "faker";
+import * as faker from "faker/locale/en";
 
 import { PetModel } from "../../src/modules/pets/domain/models/pet.model";
 import { PetEntity } from "../../src/modules/pets/infrastructure/entities/pet.entity";

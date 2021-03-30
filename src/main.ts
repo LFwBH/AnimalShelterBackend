@@ -4,7 +4,9 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: process.env.NODE_ENV !== "testing",
+  });
 
   const config = new DocumentBuilder()
     .setTitle('"Маленькие друзья с большим сердцем"')

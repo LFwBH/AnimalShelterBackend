@@ -3,7 +3,8 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
-  Logger,
+  Inject,
+  LoggerService,
   UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
@@ -11,9 +12,12 @@ import { Request, Response } from "express";
 import { Code } from "../common/Code";
 import { CoreApiResponse } from "../common/CoreApiResponse";
 import { Exception } from "../common/Exception";
+import { LOGGER_SERVICE } from "../providers";
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(@Inject(LOGGER_SERVICE) private readonly logger: LoggerService) {}
+
   catch(error: Error, host: ArgumentsHost): void {
     const request = host.switchToHttp().getRequest<Request>();
     const response = host.switchToHttp().getResponse<Response>();
@@ -34,8 +38,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       `Path: ${request.path}; ` +
       `Error: ${errorResponse.message}`;
 
-    Logger.error(message);
-    Logger.debug(error.stack);
+    this.logger.error(message, error.stack);
 
     response.status(status).json(errorResponse);
   }

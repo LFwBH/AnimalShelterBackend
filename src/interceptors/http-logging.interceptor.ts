@@ -1,8 +1,9 @@
 import {
   CallHandler,
   ExecutionContext,
+  Inject,
   Injectable,
-  Logger,
+  LoggerService,
   NestInterceptor,
 } from "@nestjs/common";
 import { Request } from "express";
@@ -10,9 +11,12 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { CoreApiResponse } from "../common/CoreApiResponse";
+import { LOGGER_SERVICE } from "../providers";
 
 @Injectable()
 export class HttpLoggingInterceptor implements NestInterceptor {
+  constructor(@Inject(LOGGER_SERVICE) private readonly logger: LoggerService) {}
+
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -29,7 +33,7 @@ export class HttpLoggingInterceptor implements NestInterceptor {
           `Path: ${request.path}; ` +
           `SpentTime: ${requestFinishDate - requestStartDate}ms`;
 
-        Logger.log(message, HttpLoggingInterceptor.name);
+        this.logger.log(message, HttpLoggingInterceptor.name);
       }),
     );
   }

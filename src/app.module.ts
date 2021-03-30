@@ -1,15 +1,29 @@
 import { Module, ValidationPipe } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { PlacementsModule } from "modules/placements/placements.module";
+import { LoggerModule } from "nestjs-pino";
 
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
 import { LocationsModule } from "./modules/locations/locations.module";
 import { PetsModule } from "./modules/pets/pets.module";
 import { UsersModule } from "./modules/users/users.module";
+import { LOGGER_SERVICE } from "./providers";
+import { PinoLoggerService } from "./services/pino-logger.service";
 
 @Module({
-  imports: [PetsModule, PlacementsModule, LocationsModule, UsersModule],
+  imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.NODE_ENV !== "production" ? "debug" : "info",
+        prettyPrint: process.env.NODE_ENV !== "production",
+      },
+    }),
+    PetsModule,
+    PlacementsModule,
+    LocationsModule,
+    UsersModule,
+  ],
   controllers: [],
   providers: [
     {
@@ -19,6 +33,10 @@ import { UsersModule } from "./modules/users/users.module";
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpLoggingInterceptor,
+    },
+    {
+      provide: LOGGER_SERVICE,
+      useClass: PinoLoggerService,
     },
     {
       provide: APP_PIPE,
