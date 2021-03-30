@@ -1,4 +1,6 @@
 import { LocationModel } from "../models/location.model";
 
 export interface UpdateLocationPort
-  extends Partial<Omit<LocationModel, "createdAt" | "updatedAt">> {}
+  extends Partial<Omit<LocationModel, "createdAt" | "updatedAt">> {
+  readonly id: number;
+}

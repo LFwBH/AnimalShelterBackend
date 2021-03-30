@@ -79,3 +79,13 @@ model Location {
 
   @@map(name: "location")
 }
+
+model User {
+  id_user    Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map(name: "user")
+}

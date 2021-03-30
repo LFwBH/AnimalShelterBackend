@@ -6,9 +6,10 @@ import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
 import { LocationsModule } from "./modules/locations/locations.module";
 import { PetsModule } from "./modules/pets/pets.module";
+import { UsersModule } from "./modules/users/users.module";
 
 @Module({
-  imports: [PetsModule, PlacementsModule, LocationsModule],
+  imports: [PetsModule, PlacementsModule, LocationsModule, UsersModule],
   controllers: [],
   providers: [
     {

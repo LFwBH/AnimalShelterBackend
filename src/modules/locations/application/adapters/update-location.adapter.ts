@@ -1,5 +1,5 @@
 import { plainToClass } from "class-transformer";
-import { IsOptional, IsString, IsUrl } from "class-validator";
+import { IsInt, IsOptional, IsString, IsUrl } from "class-validator";
 
 import { Optional } from "../../../../common/Optional";
 import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
@@ -8,6 +8,9 @@ import { UpdateLocationPort } from "../../domain/ports/update-location.port";
 export class UpdateLocationAdapter
   extends UseCaseValidatableAdapter
   implements UpdateLocationPort {
+  @IsInt()
+  readonly id: number;
+
   @IsString()
   @IsOptional()
   readonly name: Optional<string>;

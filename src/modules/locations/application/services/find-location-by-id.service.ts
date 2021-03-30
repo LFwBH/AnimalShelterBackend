@@ -1,5 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 
+import { Code } from "../../../../common/Code";
+import { Exception } from "../../../../common/Exception";
 import { Optional } from "../../../../common/Optional";
 import { LocationModel } from "../../domain/models/location.model";
 import { LOCATION_REPOSITORY } from "../../domain/providers";
@@ -14,6 +16,15 @@ export class FindLocationByIdService implements FindLocationByIdUseCase {
   ) {}
 
   execute(port: number): Promise<Optional<LocationModel>> {
-    return this.locationRepository.findById(port);
+    const location = this.locationRepository.findById(port);
+
+    if (!location) {
+      throw Exception.new({
+        code: Code.ENTITY_NOT_FOUND_ERROR,
+        message: "Location not found",
+      });
+    }
+
+    return location;
   }
 }

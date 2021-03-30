@@ -6,6 +6,7 @@ import {
   CREATE_LOCATION_USE_CASE,
   FIND_ALL_LOCATIONS_USE_CASE,
   FIND_LOCATION_BY_ID_USE_CASE,
+  LOCATION_REPOSITORY,
   UPDATE_LOCATION_USE_CASE,
 } from "../../domain/providers";
 import { LocationRepository } from "../../domain/repositories/location.repository";
@@ -29,6 +30,7 @@ const providers: Provider[] = [
         prismaService,
       );
     },
+    inject: [LOCATION_REPOSITORY, PrismaService],
   },
   {
     provide: UPDATE_LOCATION_USE_CASE,
@@ -44,6 +46,7 @@ const providers: Provider[] = [
         prismaService,
       );
     },
+    inject: [LOCATION_REPOSITORY, PrismaService],
   },
   {
     provide: FIND_LOCATION_BY_ID_USE_CASE,

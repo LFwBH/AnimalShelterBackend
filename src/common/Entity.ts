@@ -5,7 +5,7 @@ import { Code } from "./Code";
 import { Exception } from "./Exception";
 import { Optional } from "./Optional";
 
-export class Entity {
+export abstract class Entity {
   @IsNumber()
   @IsOptional()
   readonly id: number;
