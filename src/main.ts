@@ -1,5 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as compression from "compression";
 import * as helmet from "helmet";
 
 import { AppModule } from "./app.module";
@@ -10,6 +11,7 @@ async function bootstrap(): Promise<void> {
   });
 
   app.use(helmet());
+  app.use(compression());
 
   const config = new DocumentBuilder()
     .setTitle('"Маленькие друзья с большим сердцем"')
