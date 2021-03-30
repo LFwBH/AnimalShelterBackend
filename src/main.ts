@@ -1,5 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as helmet from "helmet";
 
 import { AppModule } from "./app.module";
 
@@ -7,6 +8,8 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
     logger: process.env.NODE_ENV !== "testing",
   });
+
+  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('"Маленькие друзья с большим сердцем"')
