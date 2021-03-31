@@ -30,7 +30,9 @@ export class PrismaLocationRepository implements LocationRepository {
   }
 
   async update(overrides: UpdateLocationPort): Promise<LocationModel> {
-    const locationEntity = await LocationEntity.new(overrides);
+    const locationEntity = await LocationEntity.new(overrides, {
+      skipMissingProperties: true,
+    });
 
     const prismaLocation = await PrismaLocationMapper.toPrismaLocation(
       locationEntity,

@@ -12,6 +12,7 @@ import {
 
 import { Entity } from "../../../../common/Entity";
 import { Optional } from "../../../../common/Optional";
+import { ValidatorOptions } from "../../../../common/ValidatorOptions";
 import { PetPlacementEntity } from "../../../placements/infrastructure/entities/pet-placement.entity";
 import { PetModel } from "../../domain/models/pet.model";
 
@@ -61,8 +62,8 @@ export class PetEntity extends Entity implements PetModel {
   @IsOptional()
   readonly archived: boolean;
 
-  @IsDate()
   @IsOptional()
+  @IsDate()
   readonly archiveDate: Optional<Date>;
 
   @IsOptional()
@@ -85,9 +86,12 @@ export class PetEntity extends Entity implements PetModel {
   @ValidateNested()
   readonly placements: PetPlacementEntity[];
 
-  static async new(payload: Partial<PetModel>): Promise<PetEntity> {
+  static async new(
+    payload: Partial<PetModel>,
+    options?: ValidatorOptions,
+  ): Promise<PetEntity> {
     const pet = plainToClass(PetEntity, payload);
-    await pet.validate();
+    await pet.validate(options);
     return pet;
   }
 }

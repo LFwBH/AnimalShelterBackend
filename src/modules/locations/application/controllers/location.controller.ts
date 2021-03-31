@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -57,12 +58,13 @@ export class LocationController {
     return CoreApiResponse.success(location);
   }
 
-  @Patch()
+  @Patch(":id")
   @ApiCreatedResponse({ type: UpdateLocationResponse })
   async update(
     @Body() body: UpdateLocationDto,
+    @Param("id", ParseIntPipe) id: number,
   ): Promise<CoreApiResponse<LocationModel>> {
-    const adapter = await UpdateLocationAdapter.new(body);
+    const adapter = await UpdateLocationAdapter.new({ ...body, id });
     const location = await this.updateLocationUseCase.execute(adapter);
     return CoreApiResponse.success(location);
   }
@@ -70,8 +72,8 @@ export class LocationController {
   @Get()
   @ApiOkResponse({ type: FindAllLocationsResponse })
   async findAll(
-    @Query("cursor") cursor?: number,
-    @Query("take") take?: number,
+    @Query("cursor") cursor?: string,
+    @Query("take") take?: string,
   ): Promise<CoreApiResponse<Iterable<LocationModel>>> {
     const adapter = await PageOptionsAdapter.new({
       cursor: cursor ? Number(cursor) : undefined,
@@ -84,10 +86,9 @@ export class LocationController {
   @Get(":id")
   @ApiOkResponse({ type: FindLocationByIdResponse })
   async findById(
-    @Param("id") id: string,
+    @Param("id", ParseIntPipe) id: number,
   ): Promise<CoreApiResponse<Optional<LocationModel>>> {
-    const adapter = Number(id);
-    const pet = await this.findLocationByIdUseCase.execute(adapter);
+    const pet = await this.findLocationByIdUseCase.execute(id);
     return CoreApiResponse.success(pet);
   }
 }

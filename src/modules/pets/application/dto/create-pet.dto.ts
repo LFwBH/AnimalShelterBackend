@@ -16,11 +16,11 @@ export class CreatePetDto implements CreatePetPort {
   @IsString()
   readonly color: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: ["Dog", "Cat"] })
   @IsIn(["Dog", "Cat"])
   readonly kind: "Dog" | "Cat";
 
-  @ApiProperty()
+  @ApiProperty({ enum: ["Boy", "Girl"] })
   @IsIn(["Boy", "Girl"])
   readonly sex: "Boy" | "Girl";
 

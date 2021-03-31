@@ -10,12 +10,14 @@ import {
   FIND_PET_BY_ID_USE_CASE,
   PETS_REPOSITORY,
   PLACEMENTS_REPOSITORY,
+  UPDATE_PET_USE_CASE,
 } from "../../domain/providers";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { AddPlacementService } from "../services/add-placement.service";
 import { CreatePetService } from "../services/create-pet.service";
 import { FindAllPetsService } from "../services/find-all-pets.service";
 import { FindPetByIdService } from "../services/find-pet-by-id.service";
+import { UpdatePetService } from "../services/update-pet.service";
 
 const providers: Provider[] = [
   {
@@ -30,8 +32,15 @@ const providers: Provider[] = [
     inject: [PETS_REPOSITORY, PrismaService],
   },
   {
-    provide: FIND_ALL_PETS_USE_CASE,
-    useClass: FindAllPetsService,
+    provide: UPDATE_PET_USE_CASE,
+    useFactory: (
+      petsRepository: PetsRepository,
+      prismaService: PrismaService,
+    ) => {
+      const updatePetService = new UpdatePetService(petsRepository);
+      return new TransactionalUseCaseWrapper(updatePetService, prismaService);
+    },
+    inject: [PETS_REPOSITORY, PrismaService],
   },
   {
     provide: ADD_PLACEMENT_USE_CASE,
@@ -50,6 +59,10 @@ const providers: Provider[] = [
       );
     },
     inject: [PETS_REPOSITORY, PLACEMENTS_REPOSITORY, PrismaService],
+  },
+  {
+    provide: FIND_ALL_PETS_USE_CASE,
+    useClass: FindAllPetsService,
   },
   {
     provide: FIND_PET_BY_ID_USE_CASE,

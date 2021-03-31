@@ -1,12 +1,12 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString, IsUrl } from "class-validator";
 
 import { Optional } from "../../../../common/Optional";
 import { UpdateLocationPort } from "../../domain/ports/update-location.port";
 
 export class UpdateLocationDto implements UpdateLocationPort {
-  @ApiProperty()
   @IsInt()
+  @IsOptional()
   readonly id: number;
 
   @ApiPropertyOptional({ type: String })

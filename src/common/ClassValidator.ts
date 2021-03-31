@@ -1,4 +1,5 @@
-import { validate, ValidationError } from "class-validator";
+/* eslint-disable @typescript-eslint/ban-types */
+import { validate, ValidatorOptions } from "class-validator";
 
 import { Optional } from "./Optional";
 
@@ -13,17 +14,16 @@ export type ClassValidationErrors = {
 };
 
 export class ClassValidator {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  static async validate<TTarget extends object>(
-    target: TTarget,
-    context?: string,
+  static async validate<T extends object>(
+    target: T,
+    options?: ValidatorOptions,
   ): Promise<Optional<ClassValidationDetails>> {
     let details: Optional<ClassValidationDetails>;
-    const errors: ValidationError[] = await validate(target);
+    const errors = await validate(target, options);
 
     if (errors.length > 0) {
       details = {
-        context: context || target.constructor.name,
+        context: target.constructor.name,
         errors: [],
       };
 

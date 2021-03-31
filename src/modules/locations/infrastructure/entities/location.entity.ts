@@ -9,6 +9,7 @@ import {
 
 import { Entity } from "../../../../common/Entity";
 import { Optional } from "../../../../common/Optional";
+import { ValidatorOptions } from "../../../../common/ValidatorOptions";
 import { LocationModel } from "../../domain/models/location.model";
 
 export class LocationEntity extends Entity implements LocationModel {
@@ -32,9 +33,12 @@ export class LocationEntity extends Entity implements LocationModel {
   @IsOptional()
   readonly updatedAt: Date;
 
-  static async new(payload: Partial<LocationModel>): Promise<LocationEntity> {
+  static async new(
+    payload: Partial<LocationModel>,
+    options?: ValidatorOptions,
+  ): Promise<LocationEntity> {
     const placement = plainToClass(LocationEntity, payload);
-    await placement.validate();
+    await placement.validate(options);
     return placement;
   }
 }

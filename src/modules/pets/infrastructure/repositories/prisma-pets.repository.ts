@@ -3,8 +3,10 @@ import { Injectable } from "@nestjs/common";
 import { Optional } from "../../../../common/Optional";
 import { RepositoryPageOptions } from "../../../../common/RepositoryPageOptions";
 import { PrismaService } from "../../../../services/prisma.service";
+import { PetModel } from "../../domain/models/pet.model";
 import { CreatePetPort } from "../../domain/ports/create-pet.port";
 import { PetFilterPort } from "../../domain/ports/pet-filter.port";
+import { UpdatePetPort } from "../../domain/ports/update-pet.port";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { PetEntity } from "../entities/pet.entity";
 import { PrismaPetsMapper } from "../mappers/prisma-pets.mapper";
@@ -14,11 +16,27 @@ import { Prisma } from ".prisma/client";
 export class PrismaPetsRepository implements PetsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async update(pet: UpdatePetPort): Promise<PetModel> {
+    const petEntity = await PetEntity.new(pet, { skipMissingProperties: true });
+    const prismaPet = await PrismaPetsMapper.toPrismaPet(petEntity);
+
+    const updatedPrismaPet = await this.prismaService.pet.update({
+      where: { id_pet: pet.id },
+      data: prismaPet,
+    });
+
+    return PrismaPetsMapper.toEntityPet(updatedPrismaPet);
+  }
+
   async create(pet: CreatePetPort): Promise<PetEntity> {
     const petEntity = await PetEntity.new(pet);
     const prismaPet = await PrismaPetsMapper.toPrismaPet(petEntity);
-    const result = await this.prismaService.pet.create({ data: prismaPet });
-    return PrismaPetsMapper.toEntityPet(result);
+
+    const createdPrismaPet = await this.prismaService.pet.create({
+      data: prismaPet,
+    });
+
+    return PrismaPetsMapper.toEntityPet(createdPrismaPet);
   }
 
   async findAll(
