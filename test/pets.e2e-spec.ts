@@ -4,7 +4,7 @@ import {
   OnModuleInit,
 } from "@nestjs/common";
 import { APP_FILTER } from "@nestjs/core";
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test } from "@nestjs/testing";
 import * as faker from "faker/locale/en";
 import * as request from "supertest";
 
@@ -15,11 +15,12 @@ import { PetsRepository } from "../src/modules/pets/domain/repositories/pets.rep
 import { PetsModule } from "../src/modules/pets/pets.module";
 import { LOGGER_SERVICE } from "../src/providers";
 import { PrismaService } from "../src/services/prisma.service";
-import getHttpErrorSchema from "./helpers/getHttpErrorSchema";
-import getPetSchema from "./helpers/getPetSchema";
-import getRandomPet, { getRandomOneOf } from "./helpers/getRandomPet";
-import getResponseSchema from "./helpers/getResponseSchema";
+import { PetFactory } from "./factories/pet.factory";
+import { getRandomOneOf } from "./helpers";
 import { LoggerMock } from "./mocks/logger.mock";
+import { HttpErrorSchemaFactory } from "./schemas/http-error.schema";
+import { PetSchemaFactory } from "./schemas/pet.schema";
+import { ResponseSchemaFactory } from "./schemas/response.schema";
 
 describe("PetsController (e2e)", () => {
   let app: INestApplication;
@@ -34,15 +35,15 @@ describe("PetsController (e2e)", () => {
 
   const mockPrismaPetsRepository: PetsRepository = {
     create: async (pet) => {
-      return getRandomPet(pet);
+      return PetFactory.build(pet);
     },
 
     update: async (pet) => {
-      return getRandomPet(pet);
+      return PetFactory.build(pet);
     },
 
     findById: async (id) => {
-      return getRandomPet({ id });
+      return PetFactory.build({ id });
     },
 
     findAll: async (page) => {
@@ -54,7 +55,7 @@ describe("PetsController (e2e)", () => {
           i < (page.cursor ?? 0) + page.take;
           i++
         ) {
-          const pet = await getRandomPet({ id: i });
+          const pet = PetFactory.build({ id: i });
           pets.push(pet);
         }
       }
@@ -64,7 +65,7 @@ describe("PetsController (e2e)", () => {
   };
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [PetsModule],
       providers: [
         {
@@ -83,12 +84,15 @@ describe("PetsController (e2e)", () => {
       .useValue(mockPrismaPetsRepository)
       .compile();
 
-    app = moduleFixture.createNestApplication();
+    app = module.createNestApplication();
     await app.init();
   });
 
   it("/pets (POST 201)", () => {
-    const schema = getResponseSchema(getPetSchema());
+    const schema = ResponseSchemaFactory.build(
+      {},
+      { data: PetSchemaFactory.build() },
+    );
 
     return request(app.getHttpServer())
       .post("/pets")
@@ -110,8 +114,9 @@ describe("PetsController (e2e)", () => {
   });
 
   it("/pets (POST 400)", () => {
-    const schema = getResponseSchema(
-      getHttpErrorSchema({ minItems: 3, maxItems: 3 }),
+    const schema = ResponseSchemaFactory.build(
+      {},
+      { data: HttpErrorSchemaFactory.build({}, { minItems: 3, maxItems: 3 }) },
     );
 
     return request(app.getHttpServer())
@@ -131,12 +136,17 @@ describe("PetsController (e2e)", () => {
   });
 
   it("/pets?take=10 (GET)", () => {
-    const schema = getResponseSchema({
-      type: "array",
-      contains: getPetSchema(),
-      minItems: 10,
-      maxItems: 10,
-    });
+    const schema = ResponseSchemaFactory.build(
+      {},
+      {
+        data: {
+          type: "array",
+          contains: PetSchemaFactory.build(),
+          minItems: 10,
+          maxItems: 10,
+        },
+      },
+    );
 
     return request(app.getHttpServer())
       .get("/pets")
@@ -150,7 +160,10 @@ describe("PetsController (e2e)", () => {
   });
 
   it("/pets/1 (GET)", () => {
-    const schema = getResponseSchema(getPetSchema());
+    const schema = ResponseSchemaFactory.build(
+      {},
+      { data: PetSchemaFactory.build() },
+    );
 
     return request(app.getHttpServer())
       .get("/pets/1")

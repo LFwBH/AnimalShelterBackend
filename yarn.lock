@@ -1411,6 +1411,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/rosie@npm:^0.0.38":
+  version: 0.0.38
+  resolution: "@types/rosie@npm:0.0.38"
+  checksum: 36a39051fe4d6c2c5701d3dd920d46f8b0579030d6a5791ac73a32e711b626a6ad0ecd30d22d900cc0af036812f2fc2bf551d580da2babf04f8f1241c50a7f7b
+  languageName: node
+  linkType: hard
+
 "@types/serve-static@npm:*":
   version: 1.13.9
   resolution: "@types/serve-static@npm:1.13.9"
@@ -1967,6 +1974,7 @@ __metadata:
     "@types/node": ^14.14.35
     "@types/passport": ^0
     "@types/passport-jwt": ^3.0.5
+    "@types/rosie": ^0.0.38
     "@types/supertest": ^2.0.10
     "@types/swagger-ui-express": ^4.1.2
     "@typescript-eslint/eslint-plugin": ^4.18.0
@@ -1996,6 +2004,7 @@ __metadata:
     prisma: ^2.19.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
+    rosie: ^2.1.0
     rxjs: ^6.6.6
     supertest: ^6.1.3
     swagger-ui-express: ^4.1.6
@@ -8278,6 +8287,13 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 059efac2838ef917d4d1da1d80e724ad28c120cdf14ca6ed27ca72db2dc70be3e25421cba5947c6ec3d804c1d2bb9a247254653816ee0722bf943ffdd1ae19ef
+  languageName: node
+  linkType: hard
+
+"rosie@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "rosie@npm:2.1.0"
+  checksum: 3a457cf04fecb85749e06aa1dffcfc333df2f312468aace4a40c45ef8b26b80e389760b4b1728b9656e12b889d47f324ce5c98fe6fc869c4f17a9e8969793145
   languageName: node
   linkType: hard
 
