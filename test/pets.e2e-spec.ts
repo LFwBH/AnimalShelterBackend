@@ -37,6 +37,10 @@ describe("PetsController (e2e)", () => {
       return getRandomPet(pet);
     },
 
+    update: async (pet) => {
+      return getRandomPet(pet);
+    },
+
     findById: async (id) => {
       return getRandomPet({ id });
     },

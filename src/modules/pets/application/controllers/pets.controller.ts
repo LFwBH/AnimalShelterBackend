@@ -89,11 +89,14 @@ export class PetsController {
   @Get()
   @ApiOkResponse({ type: FindAllPetsResponse })
   async findAll(
-    @Query("cursor", ParseIntPipe) cursor?: number,
-    @Query("take", ParseIntPipe) take?: number,
+    @Query("cursor") cursor?: number,
+    @Query("take") take?: number,
     @Query("filter") filter?: PetFilterDto,
   ): Promise<CoreApiResponse<Iterable<PetModel>>> {
-    const pageOptionsAdapter = await PageOptionsAdapter.new({ cursor, take });
+    const pageOptionsAdapter = await PageOptionsAdapter.new({
+      cursor: cursor ? Number(cursor) : undefined,
+      take: take ? Number(take) : undefined,
+    });
 
     let filterOptionsAdapter: Optional<PetFilterAdapter>;
 
