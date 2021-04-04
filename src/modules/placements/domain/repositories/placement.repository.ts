@@ -4,6 +4,7 @@ import { Optional } from "../../../../common/Optional";
 import { PlacementModel } from "../models/placement.model";
 import { CreatePetPlacementPort } from "../ports/create-pet-placement.port";
 import { CreatePlacementPort } from "../ports/create-placement.port";
+import { DeletePetPlacementPort } from "../ports/delete-pet-placement.port";
 
 export interface PlacementRepository {
   create(placement: CreatePlacementPort): Promise<PlacementModel>;
@@ -13,4 +14,6 @@ export interface PlacementRepository {
   findById(id: number): Promise<Optional<PlacementModel>>;
 
   addPlacementToPet(petPlacement: CreatePetPlacementPort): Promise<void>;
+
+  deletePlacementFromPet(petPlacement: DeletePetPlacementPort): Promise<void>;
 }

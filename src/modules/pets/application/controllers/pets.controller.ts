@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -18,25 +19,30 @@ import { PetModel } from "../../domain/models/pet.model";
 import {
   ADD_PLACEMENT_USE_CASE,
   CREATE_PET_USE_CASE,
+  DELETE_PLACEMENT_USE_CASE,
   FIND_ALL_PETS_USE_CASE,
   FIND_PET_BY_ID_USE_CASE,
   UPDATE_PET_USE_CASE,
 } from "../../domain/providers";
 import { AddPlacementUseCase } from "../../domain/usecases/add-placement.usecase";
 import { CreatePetUseCase } from "../../domain/usecases/create-pet.usecase";
+import { DeletePlacementUseCase } from "../../domain/usecases/delete-placement.usecase";
 import { FindAllPetsUseCase } from "../../domain/usecases/find-all-pets.usecase";
 import { FindPetByIdUseCase } from "../../domain/usecases/find-by-id.usecase";
 import { UpdatePetUseCase } from "../../domain/usecases/update-pet.usecase";
 import { AddPlacementAdapter } from "../adapters/add-placement.adapter";
 import { CreatePetAdapter } from "../adapters/create-pet.adapter";
+import { DeletePlacementAdapter } from "../adapters/delete-placement.adapter";
 import { PetFilterAdapter } from "../adapters/pet-filter.adapter";
 import { UpdatePetAdapter } from "../adapters/update-pet.adapter";
 import { AddPlacementDto } from "../dto/add-placement.dto";
 import { CreatePetDto } from "../dto/create-pet.dto";
+import { DeletePlacementDto } from "../dto/delete-placement.dto";
 import { PetFilterDto } from "../dto/pet-filter.dto";
 import { UpdatePetDto } from "../dto/update-pet.dto";
 import { AddPlacementResponse } from "../swagger/add-placement.response";
 import { CreatePetResponse } from "../swagger/create-pet.response";
+import { DeletePlacementResponse } from "../swagger/delete-placement.response";
 import { FindAllPetsResponse } from "../swagger/find-all-pets.response";
 import { FindPetByIdResponse } from "../swagger/find-pet-by-id.response";
 import { UpdatePetResponse } from "../swagger/update-pet.response";
@@ -55,6 +61,8 @@ export class PetsController {
     private readonly findPetByIdUseCase: FindPetByIdUseCase,
     @Inject(ADD_PLACEMENT_USE_CASE)
     private readonly addPlacementUseCase: AddPlacementUseCase,
+    @Inject(DELETE_PLACEMENT_USE_CASE)
+    private readonly deletePlacementUseCase: DeletePlacementUseCase,
   ) {}
 
   @Post()
@@ -83,6 +91,16 @@ export class PetsController {
   ): Promise<CoreApiResponse<PetModel>> {
     const adapter = await AddPlacementAdapter.new(body);
     const pet = await this.addPlacementUseCase.execute(adapter);
+    return CoreApiResponse.success(pet);
+  }
+
+  @Delete("/placement")
+  @ApiOkResponse({ type: DeletePlacementResponse })
+  async deletePlacement(
+    @Body() body: DeletePlacementDto,
+  ): Promise<CoreApiResponse<PetModel>> {
+    const adapter = await DeletePlacementAdapter.new(body);
+    const pet = await this.deletePlacementUseCase.execute(adapter);
     return CoreApiResponse.success(pet);
   }
 

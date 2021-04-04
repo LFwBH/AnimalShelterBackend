@@ -6,6 +6,7 @@ import { Optional } from "../../../../common/Optional";
 import { PrismaService } from "../../../../services/prisma.service";
 import { CreatePetPlacementPort } from "../../domain/ports/create-pet-placement.port";
 import { CreatePlacementPort } from "../../domain/ports/create-placement.port";
+import { DeletePetPlacementPort } from "../../domain/ports/delete-pet-placement.port";
 import { PlacementEntity } from "../entities/placement.entity";
 import { PrismaPlacementsMapper } from "../mappers/prisma-placements.mapper";
 import { Prisma } from ".prisma/client";
@@ -13,16 +14,6 @@ import { Prisma } from ".prisma/client";
 @Injectable()
 export class PrismaPlacementRepository implements PlacementRepository {
   constructor(readonly prismaService: PrismaService) {}
-
-  async addPlacementToPet(petPlacement: CreatePetPlacementPort): Promise<void> {
-    await this.prismaService.petPlacement.create({
-      data: {
-        id_pet: petPlacement.petId,
-        description: petPlacement.description,
-        id_placement: petPlacement.placementId,
-      },
-    });
-  }
 
   async findById(id: number): Promise<Optional<PlacementEntity>> {
     const findUniqueArgs: Prisma.SelectSubset<
@@ -78,5 +69,28 @@ export class PrismaPlacementRepository implements PlacementRepository {
     return Promise.all(
       placements.map((o) => PrismaPlacementsMapper.toEntityPlacement(o)),
     );
+  }
+
+  async addPlacementToPet(petPlacement: CreatePetPlacementPort): Promise<void> {
+    await this.prismaService.petPlacement.create({
+      data: {
+        id_pet: petPlacement.petId,
+        description: petPlacement.description,
+        id_placement: petPlacement.placementId,
+      },
+    });
+  }
+
+  async deletePlacementFromPet(
+    petPlacement: DeletePetPlacementPort,
+  ): Promise<void> {
+    await this.prismaService.petPlacement.delete({
+      where: {
+        id_pet_id_placement: {
+          id_pet: petPlacement.petId,
+          id_placement: petPlacement.placementId,
+        },
+      },
+    });
   }
 }

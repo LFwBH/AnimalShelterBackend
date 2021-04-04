@@ -6,6 +6,7 @@ import { PlacementRepositoryAdapter } from "../../../placements/application/adap
 import {
   ADD_PLACEMENT_USE_CASE,
   CREATE_PET_USE_CASE,
+  DELETE_PLACEMENT_USE_CASE,
   FIND_ALL_PETS_USE_CASE,
   FIND_PET_BY_ID_USE_CASE,
   PETS_REPOSITORY,
@@ -15,6 +16,7 @@ import {
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { AddPlacementService } from "../services/add-placement.service";
 import { CreatePetService } from "../services/create-pet.service";
+import { DeletePlacementService } from "../services/delete-placement.service";
 import { FindAllPetsService } from "../services/find-all-pets.service";
 import { FindPetByIdService } from "../services/find-pet-by-id.service";
 import { UpdatePetService } from "../services/update-pet.service";
@@ -55,6 +57,24 @@ const providers: Provider[] = [
       );
       return new TransactionalUseCaseWrapper(
         addPlacementService,
+        prismaService,
+      );
+    },
+    inject: [PETS_REPOSITORY, PLACEMENTS_REPOSITORY, PrismaService],
+  },
+  {
+    provide: DELETE_PLACEMENT_USE_CASE,
+    useFactory: (
+      petsRepository: PetsRepository,
+      placementRepository: PlacementRepositoryAdapter,
+      prismaService: PrismaService,
+    ) => {
+      const deletePlacementService = new DeletePlacementService(
+        petsRepository,
+        placementRepository,
+      );
+      return new TransactionalUseCaseWrapper(
+        deletePlacementService,
         prismaService,
       );
     },

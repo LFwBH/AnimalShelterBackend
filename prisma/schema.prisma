@@ -66,6 +66,8 @@ model PetPlacement {
   created_at       DateTime  @default(now())
   updated_at       DateTime  @default(now()) @updatedAt
 
+
+  @@unique([id_pet, id_placement])
   @@map(name: "pet_placement")
 }
 
