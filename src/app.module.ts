@@ -5,6 +5,7 @@ import { LoggerModule } from "nestjs-pino";
 
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
+import { IncomeModule } from "./modules/income/income.module";
 import { LocationsModule } from "./modules/locations/locations.module";
 import { PetsModule } from "./modules/pets/pets.module";
 import { UsersModule } from "./modules/users/users.module";
@@ -23,6 +24,7 @@ import { PinoLoggerService } from "./services/pino-logger.service";
     PlacementsModule,
     LocationsModule,
     UsersModule,
+    IncomeModule,
   ],
   controllers: [],
   providers: [

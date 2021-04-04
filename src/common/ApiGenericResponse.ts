@@ -4,8 +4,8 @@ import { ClassType } from "./ClassType";
 import { ICoreApiResponse } from "./CoreApiResponse";
 import { Nullable } from "./Nullable";
 
-export function ApiGenericResponse<T extends ClassType>(
-  ResourceType: T | T[],
+export function ApiGenericResponse<T extends ClassType | undefined>(
+  ResourceType?: T | T[],
 ): ClassType {
   class ApiResponse implements ICoreApiResponse<T> {
     @ApiProperty()

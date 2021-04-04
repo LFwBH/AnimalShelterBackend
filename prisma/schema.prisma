@@ -89,3 +89,14 @@ model User {
 
   @@map(name: "user")
 }
+
+model Income {
+  id_income  Int      @id @default(autoincrement())
+  amount     Float
+  first_name String
+  last_name  String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map(name: "income")
+}
