@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from "class-validator";
 import { Optional } from "common/Optional";
 import { CreatePetPort } from "modules/pets/domain/ports/create-pet.port";
@@ -41,16 +42,16 @@ export class CreatePetDto implements CreatePetPort {
   @IsNumber()
   readonly age: number;
 
-  @ApiPropertyOptional({ type: Date })
-  @IsDate()
-  @IsOptional()
-  @Transform(({ value }) => new Date(value))
-  readonly archiveDate: Optional<Date>;
-
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
   readonly archived: boolean;
+
+  @ValidateIf((o: CreatePetDto) => o.archived)
+  @ApiPropertyOptional({ type: Date })
+  @IsDate()
+  @Transform(({ value, obj }) => (!obj.archived ? undefined : new Date(value)))
+  readonly archiveDate: Optional<Date>;
 
   @ApiPropertyOptional({ type: String })
   @IsString()
@@ -72,14 +73,14 @@ export class CreatePetDto implements CreatePetPort {
   @IsOptional()
   readonly reviewed: boolean;
 
-  @ApiPropertyOptional({ type: Date })
-  @IsDate()
-  @IsOptional()
-  @Transform(({ value }) => new Date(value))
-  readonly sterilizationDate: Optional<Date>;
-
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()
   @IsBoolean()
   readonly sterilized: boolean;
+
+  @ValidateIf((o: CreatePetDto) => o.sterilized)
+  @ApiPropertyOptional({ type: Date })
+  @IsDate()
+  @Transform(({ value, obj }) => (!obj.archived ? undefined : new Date(value)))
+  readonly sterilizationDate: Optional<Date>;
 }

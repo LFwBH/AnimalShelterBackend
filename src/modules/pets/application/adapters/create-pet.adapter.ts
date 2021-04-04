@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from "class-validator";
 
 import { UseCaseValidatableAdapter } from "../../../../common/UseCaseValidatableAdapter";
@@ -26,8 +27,8 @@ export class CreatePetAdapter
   @IsOptional()
   readonly archived: boolean;
 
+  @ValidateIf((o: CreatePetAdapter) => o.archived)
   @IsDate()
-  @IsOptional()
   readonly archiveDate: Date;
 
   @IsBoolean()
@@ -38,8 +39,8 @@ export class CreatePetAdapter
   @IsOptional()
   readonly sterilized: boolean;
 
+  @ValidateIf((o: CreatePetAdapter) => o.sterilized)
   @IsDate()
-  @IsOptional()
   readonly sterilizationDate: Date;
 
   @IsString()

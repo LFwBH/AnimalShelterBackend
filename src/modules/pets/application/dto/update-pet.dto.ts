@@ -8,6 +8,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from "class-validator";
 
 import { Optional } from "../../../../common/Optional";
@@ -53,16 +54,16 @@ export class UpdatePetDto implements UpdatePetPort {
   @IsNumber()
   readonly age: Optional<number>;
 
-  @ApiPropertyOptional({ type: Date })
-  @IsDate()
-  @IsOptional()
-  @Transform(({ value }) => new Date(value))
-  readonly archiveDate: Optional<Date>;
-
   @ApiPropertyOptional({ type: Boolean })
   @IsBoolean()
   @IsOptional()
   readonly archived: Optional<boolean>;
+
+  @ValidateIf((o: UpdatePetDto) => !!o.archived)
+  @ApiPropertyOptional({ type: Date })
+  @IsDate()
+  @Transform(({ value, obj }) => (!obj.archived ? undefined : new Date(value)))
+  readonly archiveDate: Optional<Date>;
 
   @ApiPropertyOptional({ type: String })
   @IsString()
@@ -84,14 +85,14 @@ export class UpdatePetDto implements UpdatePetPort {
   @IsOptional()
   readonly reviewed: Optional<boolean>;
 
-  @ApiPropertyOptional({ type: Date })
-  @IsDate()
-  @IsOptional()
-  @Transform(({ value }) => new Date(value))
-  readonly sterilizationDate: Optional<Date>;
-
   @ApiPropertyOptional({ type: Boolean })
   @IsOptional()
   @IsBoolean()
   readonly sterilized: Optional<boolean>;
+
+  @ValidateIf((o: UpdatePetDto) => !!o.sterilized)
+  @ApiPropertyOptional({ type: Date })
+  @IsDate()
+  @Transform(({ value, obj }) => (!obj.archived ? undefined : new Date(value)))
+  readonly sterilizationDate: Optional<Date>;
 }

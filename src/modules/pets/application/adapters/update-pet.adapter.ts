@@ -1,4 +1,4 @@
-import { plainToClass } from "class-transformer";
+import { plainToClass, Transform } from "class-transformer";
 import {
   IsBoolean,
   IsDate,
@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from "class-validator";
 
 import { Optional } from "../../../../common/Optional";
@@ -31,8 +32,9 @@ export class UpdatePetAdapter
   @IsOptional()
   readonly archived: Optional<boolean>;
 
+  @ValidateIf((o: UpdatePetAdapter) => !!o.archived)
+  @Transform(({ value, obj }) => (!obj.archived ? undefined : value))
   @IsDate()
-  @IsOptional()
   readonly archiveDate: Optional<Date>;
 
   @IsBoolean()
@@ -43,8 +45,9 @@ export class UpdatePetAdapter
   @IsOptional()
   readonly sterilized: Optional<boolean>;
 
+  @ValidateIf((o: UpdatePetAdapter) => !!o.sterilized)
+  @Transform(({ value, obj }) => (!obj.sterilized ? undefined : value))
   @IsDate()
-  @IsOptional()
   readonly sterilizationDate: Optional<Date>;
 
   @IsString()

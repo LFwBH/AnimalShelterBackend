@@ -1,4 +1,4 @@
-import { Transform } from "class-transformer";
+import { Type } from "class-transformer";
 import {
   IsBoolean,
   IsDate,
@@ -18,47 +18,47 @@ export class PetFilterDto implements PetFilterPort {
 
   @IsNumber()
   @IsOptional()
-  @Transform(({ value }) => Number(value))
+  @Type(() => Number)
   readonly age: number;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly special: boolean;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly passport: boolean;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly dead: boolean;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly archived: boolean;
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) => new Date(value))
+  @Type(() => Date)
   readonly archive_date: Optional<Date>;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly reviewed: boolean;
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Type(() => Boolean)
   readonly sterilized: boolean;
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) => new Date(value))
+  @Type(() => Date)
   readonly sterilization_date: Optional<Date>;
 
   @IsString()

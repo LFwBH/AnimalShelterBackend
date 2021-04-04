@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
   ValidateNested,
 } from "class-validator";
 
@@ -62,7 +63,7 @@ export class PetEntity extends Entity implements PetModel {
   @IsOptional()
   readonly archived: boolean;
 
-  @IsOptional()
+  @ValidateIf((o: PetEntity) => o.archived)
   @IsDate()
   readonly archiveDate: Optional<Date>;
 
@@ -74,7 +75,7 @@ export class PetEntity extends Entity implements PetModel {
   @IsBoolean()
   readonly sterilized: boolean;
 
-  @IsOptional()
+  @ValidateIf((o: PetEntity) => o.sterilized)
   @IsDate()
   readonly sterilizationDate: Optional<Date>;
 
