@@ -37,7 +37,6 @@ import { PetFilterAdapter } from "../adapters/pet-filter.adapter";
 import { UpdatePetAdapter } from "../adapters/update-pet.adapter";
 import { AddPlacementDto } from "../dto/add-placement.dto";
 import { CreatePetDto } from "../dto/create-pet.dto";
-import { DeletePlacementDto } from "../dto/delete-placement.dto";
 import { PetFilterDto } from "../dto/pet-filter.dto";
 import { UpdatePetDto } from "../dto/update-pet.dto";
 import { AddPlacementResponse } from "../swagger/add-placement.response";
@@ -94,12 +93,16 @@ export class PetsController {
     return CoreApiResponse.success(pet);
   }
 
-  @Delete("/placement")
+  @Delete("/:petId/placement/:placementId")
   @ApiOkResponse({ type: DeletePlacementResponse })
   async deletePlacement(
-    @Body() body: DeletePlacementDto,
+    @Param("petId", ParseIntPipe) petId: number,
+    @Param("placementId", ParseIntPipe) placementId: number,
   ): Promise<CoreApiResponse<PetModel>> {
-    const adapter = await DeletePlacementAdapter.new(body);
+    const adapter = await DeletePlacementAdapter.new({
+      petId,
+      placementId,
+    });
     const pet = await this.deletePlacementUseCase.execute(adapter);
     return CoreApiResponse.success(pet);
   }

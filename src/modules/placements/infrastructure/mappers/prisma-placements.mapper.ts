@@ -1,7 +1,13 @@
+import { Prisma } from "@prisma/client";
+
 import { PlacementEntity } from "../entities/placement.entity";
-import { Prisma } from ".prisma/client";
+import { PrismaPetPlacementMapper } from "./prisma-pet-placement.mapper";
 
 type PrismaPlacement = Prisma.PlacementGetPayload<null>;
+
+type PrismaPlacementWithPets = Prisma.PlacementGetPayload<{
+  include: { pet_placements: true };
+}>;
 
 export class PrismaPlacementsMapper {
   static async toPrismaPlacement(
@@ -15,6 +21,23 @@ export class PrismaPlacementsMapper {
     };
   }
 
+  static async toPrismaPlacementWithPets(
+    placement: PlacementEntity,
+  ): Promise<PrismaPlacementWithPets> {
+    const prismaPlacement = await this.toPrismaPlacement(placement);
+
+    const prismaPetPlacements = await Promise.all(
+      placement.petPlacements.map((placement) =>
+        PrismaPetPlacementMapper.toPrismaPetPlacement(placement),
+      ),
+    );
+
+    return {
+      ...prismaPlacement,
+      pet_placements: prismaPetPlacements,
+    };
+  }
+
   static async toEntityPlacement(
     placement: PrismaPlacement,
   ): Promise<PlacementEntity> {
@@ -23,6 +46,23 @@ export class PrismaPlacementsMapper {
       name: placement.name,
       createdAt: placement.created_at,
       updatedAt: placement.updated_at,
+    });
+  }
+
+  static async toEntityPlacementWithPets(
+    placement: PrismaPlacementWithPets,
+  ): Promise<PlacementEntity> {
+    const placementEntity = await this.toEntityPlacement(placement);
+
+    const petPlacementEntities = await Promise.all(
+      placement.pet_placements.map((placement) =>
+        PrismaPetPlacementMapper.toEntityPetPlacement(placement),
+      ),
+    );
+
+    return PlacementEntity.new({
+      ...placementEntity,
+      petPlacements: petPlacementEntities,
     });
   }
 }

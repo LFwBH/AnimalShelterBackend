@@ -27,7 +27,13 @@ export class DeletePlacementService implements DeletePlacementUseCase {
       });
     }
 
-    if (pet.placements.some((placement) => placement.id !== port.placementId)) {
+    if (
+      !pet.placements.some(
+        (placement) =>
+          placement.placementId === port.placementId &&
+          placement.petId === port.petId,
+      )
+    ) {
       throw Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         message: "Pet placement not found",

@@ -43,11 +43,11 @@ export class PrismaPetsRepository implements PetsRepository {
     page: Optional<RepositoryPageOptions & { filter: Optional<PetFilterPort> }>,
   ): Promise<Iterable<PetEntity>> {
     const findManyArgs: Prisma.SelectSubset<
-      Prisma.PetFindManyArgs & { include: { PetPlacement: true } },
+      Prisma.PetFindManyArgs & { include: { pet_placements: true } },
       Prisma.PetFindManyArgs
     > = {
       orderBy: { created_at: "asc" },
-      include: { PetPlacement: true },
+      include: { pet_placements: true },
     };
 
     if (page?.take != null) {
@@ -87,11 +87,11 @@ export class PrismaPetsRepository implements PetsRepository {
 
   async findById(id: number): Promise<Optional<PetEntity>> {
     const findUniqueArgs: Prisma.SelectSubset<
-      Prisma.PetFindUniqueArgs & { include: { PetPlacement: true } },
+      Prisma.PetFindUniqueArgs & { include: { pet_placements: true } },
       Prisma.PetFindUniqueArgs
     > = {
       where: { id_pet: id },
-      include: { PetPlacement: true },
+      include: { pet_placements: true },
     };
 
     const pet = await this.prismaService.pet.findUnique(findUniqueArgs);

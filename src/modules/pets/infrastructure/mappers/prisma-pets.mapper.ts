@@ -6,7 +6,7 @@ import { PetEntity } from "../entities/pet.entity";
 type PrismaPet = Prisma.PetGetPayload<null>;
 
 type PrismaPetWithPlacements = Prisma.PetGetPayload<{
-  include: { PetPlacement: true };
+  include: { pet_placements: true };
 }>;
 
 export class PrismaPetsMapper {
@@ -46,7 +46,7 @@ export class PrismaPetsMapper {
 
     return {
       ...prismaPet,
-      PetPlacement: prismaPetPlacements,
+      pet_placements: prismaPetPlacements,
     };
   }
 
@@ -79,7 +79,7 @@ export class PrismaPetsMapper {
     const petEntity = await this.toEntityPet(pet);
 
     const petPlacementEntities = await Promise.all(
-      pet.PetPlacement.map((placement) =>
+      pet.pet_placements.map((placement) =>
         PrismaPetPlacementMapper.toEntityPetPlacement(placement),
       ),
     );

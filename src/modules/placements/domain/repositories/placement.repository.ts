@@ -13,6 +13,8 @@ export interface PlacementRepository {
 
   findById(id: number): Promise<Optional<PlacementModel>>;
 
+  delete(id: number): Promise<void>;
+
   addPlacementToPet(petPlacement: CreatePetPlacementPort): Promise<void>;
 
   deletePlacementFromPet(petPlacement: DeletePetPlacementPort): Promise<void>;

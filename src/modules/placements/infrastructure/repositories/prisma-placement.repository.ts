@@ -17,10 +17,11 @@ export class PrismaPlacementRepository implements PlacementRepository {
 
   async findById(id: number): Promise<Optional<PlacementEntity>> {
     const findUniqueArgs: Prisma.SelectSubset<
-      Prisma.PlacementFindUniqueArgs,
+      Prisma.PlacementFindUniqueArgs & { include: { pet_placements: true } },
       Prisma.PlacementFindUniqueArgs
     > = {
       where: { id_placement: id },
+      include: { pet_placements: true },
     };
 
     const pet = await this.prismaService.placement.findUnique(findUniqueArgs);
@@ -29,7 +30,7 @@ export class PrismaPlacementRepository implements PlacementRepository {
       return;
     }
 
-    return PrismaPlacementsMapper.toEntityPlacement(pet);
+    return PrismaPlacementsMapper.toEntityPlacementWithPets(pet);
   }
 
   async create(placement: CreatePlacementPort): Promise<PlacementEntity> {
@@ -49,8 +50,12 @@ export class PrismaPlacementRepository implements PlacementRepository {
   async findAll(
     page: RepositoryPageOptions,
   ): Promise<Iterable<PlacementEntity>> {
-    const findManyArgs: Prisma.PlacementFindManyArgs = {
+    const findManyArgs: Prisma.SelectSubset<
+      Prisma.PlacementFindManyArgs & { include: { pet_placements: true } },
+      Prisma.PlacementFindManyArgs
+    > = {
       orderBy: { created_at: "asc" },
+      include: { pet_placements: true },
     };
 
     if (page.take != null) {
@@ -67,8 +72,14 @@ export class PrismaPlacementRepository implements PlacementRepository {
     );
 
     return Promise.all(
-      placements.map((o) => PrismaPlacementsMapper.toEntityPlacement(o)),
+      placements.map((o) =>
+        PrismaPlacementsMapper.toEntityPlacementWithPets(o),
+      ),
     );
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.prismaService.placement.delete({ where: { id_placement: id } });
   }
 
   async addPlacementToPet(petPlacement: CreatePetPlacementPort): Promise<void> {
