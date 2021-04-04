@@ -4,10 +4,8 @@ import { LocationEntity } from "../entities/location.entity";
 
 type PrismaLocation = Prisma.LocationGetPayload<null>;
 
-export class PrismaLocationMapper {
-  static async toPrismaLocation(
-    location: LocationEntity,
-  ): Promise<PrismaLocation> {
+export const PrismaLocationMapper = {
+  async toPrismaLocation(location: LocationEntity): Promise<PrismaLocation> {
     return {
       id_location: location.id,
       name: location.name,
@@ -16,11 +14,9 @@ export class PrismaLocationMapper {
       image: location.image ?? null,
       updated_at: location.updatedAt,
     };
-  }
+  },
 
-  static async toEntityLocation(
-    location: PrismaLocation,
-  ): Promise<LocationEntity> {
+  async toEntityLocation(location: PrismaLocation): Promise<LocationEntity> {
     return LocationEntity.new({
       id: location.id_location,
       name: location.name,
@@ -29,5 +25,5 @@ export class PrismaLocationMapper {
       createdAt: location.created_at,
       updatedAt: location.updated_at,
     });
-  }
-}
+  },
+};

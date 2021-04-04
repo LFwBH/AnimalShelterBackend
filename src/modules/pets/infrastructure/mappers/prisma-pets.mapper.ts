@@ -9,8 +9,8 @@ type PrismaPetWithPlacements = Prisma.PetGetPayload<{
   include: { pet_placements: true };
 }>;
 
-export class PrismaPetsMapper {
-  static async toPrismaPet(pet: PetEntity): Promise<PrismaPet> {
+export const PrismaPetsMapper = {
+  async toPrismaPet(pet: PetEntity): Promise<PrismaPet> {
     return {
       age: pet.age,
       archive_date: pet.archiveDate ?? null,
@@ -31,9 +31,9 @@ export class PrismaPetsMapper {
       sterilized: pet.sterilized,
       updated_at: pet.updatedAt,
     };
-  }
+  },
 
-  static async toPrismaPetWithPlacements(
+  async toPrismaPetWithPlacements(
     pet: PetEntity,
   ): Promise<PrismaPetWithPlacements> {
     const prismaPet = await this.toPrismaPet(pet);
@@ -48,9 +48,9 @@ export class PrismaPetsMapper {
       ...prismaPet,
       pet_placements: prismaPetPlacements,
     };
-  }
+  },
 
-  static async toEntityPet(pet: PrismaPet): Promise<PetEntity> {
+  async toEntityPet(pet: PrismaPet): Promise<PetEntity> {
     return PetEntity.new({
       age: pet.age,
       archived: pet.archived,
@@ -71,9 +71,9 @@ export class PrismaPetsMapper {
       sterilized: pet.sterilized,
       updatedAt: pet.updated_at,
     });
-  }
+  },
 
-  static async toEntityPetWithPlacements(
+  async toEntityPetWithPlacements(
     pet: PrismaPetWithPlacements,
   ): Promise<PetEntity> {
     const petEntity = await this.toEntityPet(pet);
@@ -88,5 +88,5 @@ export class PrismaPetsMapper {
       ...petEntity,
       placements: petPlacementEntities,
     });
-  }
-}
+  },
+};

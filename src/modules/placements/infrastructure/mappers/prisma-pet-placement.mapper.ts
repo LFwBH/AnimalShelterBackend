@@ -4,8 +4,8 @@ import { PetPlacementEntity } from "../entities/pet-placement.entity";
 
 type PrismaPetPlacement = Prisma.PetPlacementGetPayload<null>;
 
-export class PrismaPetPlacementMapper {
-  static async toPrismaPetPlacement(
+export const PrismaPetPlacementMapper = {
+  async toPrismaPetPlacement(
     petPlacement: PetPlacementEntity,
   ): Promise<PrismaPetPlacement> {
     return {
@@ -16,9 +16,9 @@ export class PrismaPetPlacementMapper {
       id_placement: petPlacement.placementId,
       updated_at: petPlacement.updatedAt,
     };
-  }
+  },
 
-  static async toEntityPetPlacement(
+  async toEntityPetPlacement(
     petPlacement: PrismaPetPlacement,
   ): Promise<PetPlacementEntity> {
     return PetPlacementEntity.new({
@@ -29,5 +29,5 @@ export class PrismaPetPlacementMapper {
       placementId: petPlacement.id_placement,
       updatedAt: petPlacement.updated_at,
     });
-  }
-}
+  },
+};

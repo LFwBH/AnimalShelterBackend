@@ -13,8 +13,8 @@ export type ClassValidationErrors = {
   message: string[];
 };
 
-export class ClassValidator {
-  static async validate<T extends object>(
+export const ClassValidator = {
+  async validate<T extends object>(
     target: T,
     options?: ValidatorOptions,
   ): Promise<Optional<ClassValidationDetails>> {
@@ -36,5 +36,5 @@ export class ClassValidator {
     }
 
     return details;
-  }
-}
+  },
+};
