@@ -46,6 +46,10 @@ export class PrismaLocationRepository implements LocationRepository {
     return PrismaLocationMapper.toEntityLocation(prismaCreatedLocation);
   }
 
+  async delete(id: number): Promise<void> {
+    await this.prismaService.location.delete({ where: { id_location: id } });
+  }
+
   async findAll(page: RepositoryPageOptions): Promise<Iterable<LocationModel>> {
     const findManyArgs: Prisma.LocationFindManyArgs = {
       orderBy: { created_at: "asc" },

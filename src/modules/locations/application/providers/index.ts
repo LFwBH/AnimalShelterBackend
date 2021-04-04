@@ -4,6 +4,7 @@ import { TransactionalUseCaseWrapper } from "../../../../common/TransactionalUse
 import { PrismaService } from "../../../../services/prisma.service";
 import {
   CREATE_LOCATION_USE_CASE,
+  DELETE_LOCATION_USE_CASE,
   FIND_ALL_LOCATIONS_USE_CASE,
   FIND_LOCATION_BY_ID_USE_CASE,
   LOCATION_REPOSITORY,
@@ -11,6 +12,7 @@ import {
 } from "../../domain/providers";
 import { LocationRepository } from "../../domain/repositories/location.repository";
 import { CreateLocationService } from "../services/create-location.service";
+import { DeleteLocationService } from "../services/delete-location.service";
 import { FindAllLocationsService } from "../services/find-all-locations.service";
 import { FindLocationByIdService } from "../services/find-location-by-id.service";
 import { UpdateLocationService } from "../services/update-location.service";
@@ -43,6 +45,22 @@ const providers: Provider[] = [
       );
       return new TransactionalUseCaseWrapper(
         updateLocationService,
+        prismaService,
+      );
+    },
+    inject: [LOCATION_REPOSITORY, PrismaService],
+  },
+  {
+    provide: DELETE_LOCATION_USE_CASE,
+    useFactory: (
+      locationRepository: LocationRepository,
+      prismaService: PrismaService,
+    ) => {
+      const deleteLocationService = new DeleteLocationService(
+        locationRepository,
+      );
+      return new TransactionalUseCaseWrapper(
+        deleteLocationService,
         prismaService,
       );
     },

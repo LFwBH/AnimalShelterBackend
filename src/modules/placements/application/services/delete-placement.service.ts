@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 
 import { Code } from "../../../../common/Code";
 import { Exception } from "../../../../common/Exception";
@@ -6,6 +6,7 @@ import { PLACEMENTS_REPOSITORY } from "../../domain/providers";
 import { PlacementRepository } from "../../domain/repositories/placement.repository";
 import { DeletePlacementUseCase } from "../../domain/usecases/delete-placement.usecase";
 
+@Injectable()
 export class DeletePlacementService implements DeletePlacementUseCase {
   constructor(
     @Inject(PLACEMENTS_REPOSITORY)

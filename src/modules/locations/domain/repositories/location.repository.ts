@@ -9,6 +9,8 @@ export interface LocationRepository {
 
   update(overrides: UpdateLocationPort): Promise<LocationModel>;
 
+  delete(id: number): Promise<void>;
+
   findAll(page: RepositoryPageOptions): Promise<Iterable<LocationModel>>;
 
   findById(id: number): Promise<Optional<LocationModel>>;

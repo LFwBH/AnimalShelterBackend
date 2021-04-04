@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -17,11 +18,13 @@ import { Optional } from "../../../../common/Optional";
 import { LocationModel } from "../../domain/models/location.model";
 import {
   CREATE_LOCATION_USE_CASE,
+  DELETE_LOCATION_USE_CASE,
   FIND_ALL_LOCATIONS_USE_CASE,
   FIND_LOCATION_BY_ID_USE_CASE,
   UPDATE_LOCATION_USE_CASE,
 } from "../../domain/providers";
 import { CreateLocationUseCase } from "../../domain/usecases/create-location.usecase";
+import { DeleteLocationUseCase } from "../../domain/usecases/delete-location.usecase";
 import { FindAllLocationsUseCase } from "../../domain/usecases/find-all-locations.usecase";
 import { FindLocationByIdUseCase } from "../../domain/usecases/find-location-by-id.usecase";
 import { UpdateLocationUseCase } from "../../domain/usecases/update-location.usecase";
@@ -30,6 +33,7 @@ import { UpdateLocationAdapter } from "../adapters/update-location.adapter";
 import { CreateLocationDto } from "../dto/create-location.dto";
 import { UpdateLocationDto } from "../dto/update-location.dto";
 import { CreateLocationResponse } from "../swagger/create-location.response";
+import { DeleteLocationResponse } from "../swagger/delete-location.response";
 import { FindAllLocationsResponse } from "../swagger/find-all-locations.response";
 import { FindLocationByIdResponse } from "../swagger/find-location-by-id.response";
 import { UpdateLocationResponse } from "../swagger/update-location.response";
@@ -46,6 +50,8 @@ export class LocationController {
     private readonly findLocationByIdUseCase: FindLocationByIdUseCase,
     @Inject(FIND_ALL_LOCATIONS_USE_CASE)
     private readonly findAllLocationsUseCase: FindAllLocationsUseCase,
+    @Inject(DELETE_LOCATION_USE_CASE)
+    private readonly deleteLocationUseCase: DeleteLocationUseCase,
   ) {}
 
   @Post()
@@ -67,6 +73,15 @@ export class LocationController {
     const adapter = await UpdateLocationAdapter.new({ ...body, id });
     const location = await this.updateLocationUseCase.execute(adapter);
     return CoreApiResponse.success(location);
+  }
+
+  @Delete(":id")
+  @ApiOkResponse({ type: DeleteLocationResponse })
+  async delete(
+    @Param("id", ParseIntPipe) id: number,
+  ): Promise<CoreApiResponse<void>> {
+    await this.deleteLocationUseCase.execute(id);
+    return CoreApiResponse.success();
   }
 
   @Get()
