@@ -10,7 +10,19 @@ async function bootstrap(): Promise<void> {
     logger: process.env.NODE_ENV !== "testing",
   });
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: [`'self'`],
+          styleSrc: [`'self'`, `'unsafe-inline'`],
+          imgSrc: [`'self'`, "data:", "validator.swagger.io"],
+          scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+        },
+      },
+    }),
+  );
+
   app.use(compression());
 
   const config = new DocumentBuilder()
