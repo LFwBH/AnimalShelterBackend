@@ -99,8 +99,8 @@ describe("PetsController (e2e)", () => {
       .send({
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
-        special: faker.random.boolean(),
-        age: faker.random.number({ min: 1, max: 20 }),
+        special: faker.datatype.boolean(),
+        age: faker.datatype.number({ min: 1, max: 20 }),
         kind: getRandomOneOf(["Dog", "Cat"]),
         sex: getRandomOneOf(["Boy", "Girl"]),
         color: faker.internet.color(),
@@ -124,8 +124,8 @@ describe("PetsController (e2e)", () => {
       .send({
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
-        special: faker.random.boolean(),
-        age: faker.random.number({ min: 1, max: 20 }),
+        special: faker.datatype.boolean(),
+        age: faker.datatype.number({ min: 1, max: 20 }),
       })
       .expect(400)
       .expect((res) => {
