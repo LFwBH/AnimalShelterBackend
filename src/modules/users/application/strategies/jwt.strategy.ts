@@ -17,12 +17,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(
     payload: Record<string, string>,
-  ): Promise<Record<string, object>> {
+  ): Promise<Record<string, string>> {
     return {
-      user: {
-        id: payload.id,
-        email: payload.email,
-      },
+      id: payload.id,
+      email: payload.email,
     };
   }
 }

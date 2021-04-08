@@ -32,6 +32,7 @@ async function bootstrap(): Promise<void> {
     )
     .setVersion("1.0")
     .addTag("pets")
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

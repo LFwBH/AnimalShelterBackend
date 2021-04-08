@@ -66,7 +66,7 @@ export class PrismaPetsRepository implements PetsRepository {
             const value = page.filter?.[key];
 
             if (typeof value === "string") {
-              acc[key] = { contains: value };
+              acc[key] = { contains: value, mode: "insensitive" };
             } else {
               acc[key] = value;
             }

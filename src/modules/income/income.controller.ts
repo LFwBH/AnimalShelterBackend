@@ -43,9 +43,7 @@ export class IncomeController {
       },
     });
 
-    return CoreApiResponse.success(
-      this.incomeMapper.toIncomeModel(createdIncome),
-    );
+    return CoreApiResponse.success(this.incomeMapper.toEntity(createdIncome));
   }
 
   @Delete(":id")
@@ -94,7 +92,7 @@ export class IncomeController {
     const foundIncomes = await this.prismaService.income.findMany(findManyArgs);
 
     return CoreApiResponse.success(
-      foundIncomes.map((income) => this.incomeMapper.toIncomeModel(income)),
+      foundIncomes.map((income) => this.incomeMapper.toEntity(income)),
     );
   }
 }

@@ -1,13 +1,14 @@
 import { Module, ValidationPipe } from "@nestjs/common";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
-import { PlacementsModule } from "modules/placements/placements.module";
 import { LoggerModule } from "nestjs-pino";
 
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { HttpLoggingInterceptor } from "./interceptors/http-logging.interceptor";
 import { IncomeModule } from "./modules/income/income.module";
 import { LocationsModule } from "./modules/locations/locations.module";
+import { LostPetModule } from "./modules/lost-pet/lost-pet.module";
 import { PetsModule } from "./modules/pets/pets.module";
+import { PlacementsModule } from "./modules/placements/placements.module";
 import { UsersModule } from "./modules/users/users.module";
 import { LOGGER_SERVICE } from "./providers";
 import { PinoLoggerService } from "./services/pino-logger.service";
@@ -25,6 +26,7 @@ import { PinoLoggerService } from "./services/pino-logger.service";
     LocationsModule,
     UsersModule,
     IncomeModule,
+    LostPetModule,
   ],
   controllers: [],
   providers: [

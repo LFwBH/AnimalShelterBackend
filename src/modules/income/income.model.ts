@@ -1,4 +1,4 @@
-export class IncomeModel {
+export interface IncomeModel {
   readonly id: number;
   readonly amount: number;
   readonly firstName: string;
