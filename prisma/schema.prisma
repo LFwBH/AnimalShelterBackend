@@ -77,6 +77,7 @@ model Location {
   description String
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
+  // TODO: refactor to separate table to support list of images
   image       String?
 
   @@map(name: "location")
@@ -89,6 +90,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
+  user_lost_pets UserLostPet[]
   @@map(name: "user")
 }
 
@@ -98,7 +100,44 @@ model Income {
   first_name String
   last_name  String
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   @@map(name: "income")
+}
+
+model LostPet {
+  id_lost_pet  Int       @id @default(autoincrement())
+  archived     Boolean   @default(false)
+  archive_date DateTime?
+  description  String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @default(now()) @updatedAt
+
+  user_lost_pets  UserLostPet[]
+  lost_pet_images LostPetImage[]
+  @@map("lost_pet")
+}
+
+model LostPetImage {
+  id_lost_pet_image Int      @id @default(autoincrement())
+  id_lost_pet       Int
+  lost_pet          LostPet  @relation(fields: [id_lost_pet], references: [id_lost_pet])
+  image             String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now()) @updatedAt
+
+  @@map("lost_pet_image")
+}
+
+model UserLostPet {
+  id_user_lost_pet Int      @id @default(autoincrement())
+  id_user          Int
+  user             User     @relation(fields: [id_user], references: [id_user])
+  id_lost_pet      Int
+  lost_pet         LostPet  @relation(fields: [id_lost_pet], references: [id_lost_pet])
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now()) @updatedAt
+
+  @@unique([id_user, id_user_lost_pet])
+  @@map("user_lost_pet")
 }
