@@ -65,7 +65,8 @@ export class PrismaPetsRepository implements PetsRepository {
           (acc, key) => {
             const value = page.filter?.[key];
 
-            if (typeof value === "string") {
+            // Include every string but not enums
+            if (typeof value === "string" && key !== "kind" && key !== "sex") {
               acc[key] = { contains: value, mode: "insensitive" };
             } else {
               acc[key] = value;
