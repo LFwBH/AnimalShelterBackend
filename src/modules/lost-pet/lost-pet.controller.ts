@@ -92,9 +92,7 @@ export class LostPetController {
   }
 
   @Get(":id")
-  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: LostPetResponse })
-  @ApiBearerAuth()
   async findById(
     @Param("id", ParseIntPipe) id: number,
   ): Promise<CoreApiResponse<LostPetModel>> {
@@ -113,9 +111,7 @@ export class LostPetController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: LostPetArrayResponse })
-  @ApiBearerAuth()
   async findAll(
     @Query("take") take?: string,
     @Query("cursor") cursor?: string,
