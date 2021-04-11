@@ -43,16 +43,18 @@ const providers: Provider[] = [
     useFactory: (
       userRepository: UserRepository,
       tokenService: TokenService,
+      cryptoService: CryptoService,
       prismaService: PrismaService,
     ) => {
       const loginUserService = new LoginUserService(
         userRepository,
         tokenService,
+        cryptoService,
       );
 
       return new TransactionalUseCaseWrapper(loginUserService, prismaService);
     },
-    inject: [USER_REPOSITORY, TOKEN_SERVICE, PrismaService],
+    inject: [USER_REPOSITORY, TOKEN_SERVICE, CRYPTO_SERVICE, PrismaService],
   },
 ];
 
