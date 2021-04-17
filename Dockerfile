@@ -11,7 +11,12 @@ COPY .yarnrc.yml /home/node/
 COPY prisma/ /home/node/prisma/
 COPY nest-cli.json /home/node/
 
-RUN yarn install --immutable
+RUN apk add --no-cache --virtual .gyp \
+  python3 \
+  make \
+  g++ \
+  && yarn install --immutable \
+  && apk del .gyp
 
 COPY src/ /home/node/src/
 COPY scripts/ /home/node/scripts/

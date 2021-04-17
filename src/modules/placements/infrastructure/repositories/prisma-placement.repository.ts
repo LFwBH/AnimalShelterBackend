@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 import { RepositoryPageOptions } from "common/RepositoryPageOptions";
 import { PlacementRepository } from "modules/placements/domain/repositories/placement.repository";
 
@@ -9,7 +10,6 @@ import { CreatePlacementPort } from "../../domain/ports/create-placement.port";
 import { DeletePetPlacementPort } from "../../domain/ports/delete-pet-placement.port";
 import { PlacementEntity } from "../entities/placement.entity";
 import { PrismaPlacementsMapper } from "../mappers/prisma-placements.mapper";
-import { Prisma } from ".prisma/client";
 
 @Injectable()
 export class PrismaPlacementRepository implements PlacementRepository {

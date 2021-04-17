@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 
 import { Optional } from "../../../../common/Optional";
 import { RepositoryPageOptions } from "../../../../common/RepositoryPageOptions";
@@ -10,7 +11,6 @@ import { UpdatePetPort } from "../../domain/ports/update-pet.port";
 import { PetsRepository } from "../../domain/repositories/pets.repository";
 import { PetEntity } from "../entities/pet.entity";
 import { PrismaPetsMapper } from "../mappers/prisma-pets.mapper";
-import { Prisma } from ".prisma/client";
 
 @Injectable()
 export class PrismaPetsRepository implements PetsRepository {

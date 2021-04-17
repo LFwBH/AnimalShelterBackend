@@ -42,6 +42,7 @@ model Pet {
 
   pet_placements PetPlacement[]
 
+  favorite_pets FavoritePet[]
   @@map(name: "pet")
 }
 
@@ -90,7 +91,8 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  user_lost_pets UserLostPet[]
+  user_lost_pets     UserLostPet[]
+  user_favorite_pets UserFavoritePet[]
   @@map(name: "user")
 }
 
@@ -140,4 +142,26 @@ model UserLostPet {
 
   @@unique([id_user, id_user_lost_pet])
   @@map("user_lost_pet")
+}
+
+model FavoritePet {
+  id_favorite_pet Int      @id @default(autoincrement())
+  id_pet          Int
+  pet             Pet      @relation(fields: [id_pet], references: [id_pet])
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
+
+  user_favorite_pets UserFavoritePet[]
+  @@map("favorite_pet")
+}
+
+model UserFavoritePet {
+  id_user_favorite_pet Int         @id @default(autoincrement())
+  id_favorite_pet      Int
+  favorite_pet         FavoritePet @relation(fields: [id_favorite_pet], references: [id_favorite_pet])
+  id_user              Int
+  user                 User        @relation(fields: [id_user], references: [id_user])
+
+  @@unique([id_favorite_pet, id_user])
+  @@map("user_favorite_pet")
 }
