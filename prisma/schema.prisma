@@ -162,6 +162,5 @@ model UserFavoritePet {
   id_user              Int
   user                 User        @relation(fields: [id_user], references: [id_user])
 
-  @@unique([id_favorite_pet, id_user])
   @@map("user_favorite_pet")
 }

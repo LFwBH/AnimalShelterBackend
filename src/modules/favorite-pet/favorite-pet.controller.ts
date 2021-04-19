@@ -22,6 +22,7 @@ import { Exception } from "../../common/Exception";
 import { User } from "../../common/UserDecorator";
 import { PrismaService } from "../../services/prisma.service";
 import { FindAllPetsResponse } from "../pets/application/swagger/find-all-pets.response";
+import { FindPetByIdResponse } from "../pets/application/swagger/find-pet-by-id.response";
 import { PetModel } from "../pets/domain/models/pet.model";
 import { PrismaPetsMapper } from "../pets/infrastructure/mappers/prisma-pets.mapper";
 import { JwtAuthGuard } from "../users/application/guards/jwt-auth.guard";
@@ -52,6 +53,22 @@ export class FavoritePetController {
       throw Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         message: "Pet not found",
+      });
+    }
+
+    const favoritePetExists = await this.prismaService.favoritePet.findFirst({
+      where: {
+        id_pet: petId,
+        user_favorite_pets: {
+          every: { id_user: user.id },
+        },
+      },
+    });
+
+    if (favoritePetExists) {
+      throw Exception.new({
+        code: Code.ENTITY_ALREADY_EXISTS_ERROR,
+        message: "Pet is already favorite",
       });
     }
 
@@ -134,17 +151,45 @@ export class FavoritePetController {
     return CoreApiResponse.success(petEntities);
   }
 
-  @Delete(":favoritePetId")
+  @Get(":petId")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: FindPetByIdResponse })
+  @ApiBearerAuth()
+  async findById(
+    @Param("petId", ParseIntPipe) petId: number,
+    @User() user: User,
+  ): Promise<CoreApiResponse<PetModel>> {
+    const favoritePetExists = await this.prismaService.favoritePet.findFirst({
+      include: { pet: true },
+      where: {
+        id_pet: petId,
+        user_favorite_pets: { every: { id_user: user.id } },
+      },
+    });
+
+    if (!favoritePetExists) {
+      throw Exception.new({
+        code: Code.ENTITY_NOT_FOUND_ERROR,
+        message: "Favorite pet not found",
+      });
+    }
+
+    return CoreApiResponse.success(
+      await PrismaPetsMapper.toEntityPet(favoritePetExists.pet),
+    );
+  }
+
+  @Delete(":petId")
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: FavoritePetOkResponse })
   @ApiBearerAuth()
   async delete(
-    @Param("favoritePetId", ParseIntPipe) favoritePetId: number,
+    @Param("petId", ParseIntPipe) petId: number,
     @User() user: User,
   ): Promise<CoreApiResponse<void>> {
     const favoritePetExists = await this.prismaService.favoritePet.findFirst({
       where: {
-        id_favorite_pet: favoritePetId,
+        id_pet: petId,
         user_favorite_pets: { every: { id_user: user.id } },
       },
     });
@@ -157,17 +202,15 @@ export class FavoritePetController {
     }
 
     await this.prismaService.$transaction([
-      this.prismaService.userFavoritePet.delete({
+      this.prismaService.userFavoritePet.deleteMany({
         where: {
-          id_favorite_pet_id_user: {
-            id_user: user.id,
-            id_favorite_pet: favoritePetId,
-          },
+          id_user: user.id,
+          id_favorite_pet: favoritePetExists.id_favorite_pet,
         },
       }),
 
       this.prismaService.favoritePet.delete({
-        where: { id_favorite_pet: favoritePetId },
+        where: { id_favorite_pet: favoritePetExists.id_favorite_pet },
       }),
     ]);
 
