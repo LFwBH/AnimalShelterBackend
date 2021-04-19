@@ -1,12 +1,13 @@
 import { Prisma } from "@prisma/client";
 
+import { PetPlacementModel } from "../../domain/models/pet-placement.model";
 import { PetPlacementEntity } from "../entities/pet-placement.entity";
 
 type PrismaPetPlacement = Prisma.PetPlacementGetPayload<null>;
 
 export const PrismaPetPlacementMapper = {
   async toPrismaPetPlacement(
-    petPlacement: PetPlacementEntity,
+    petPlacement: PetPlacementModel,
   ): Promise<PrismaPetPlacement> {
     return {
       created_at: petPlacement.createdAt,
@@ -20,7 +21,7 @@ export const PrismaPetPlacementMapper = {
 
   async toEntityPetPlacement(
     petPlacement: PrismaPetPlacement,
-  ): Promise<PetPlacementEntity> {
+  ): Promise<PetPlacementModel> {
     return PetPlacementEntity.new({
       createdAt: petPlacement.created_at,
       description: petPlacement.description,

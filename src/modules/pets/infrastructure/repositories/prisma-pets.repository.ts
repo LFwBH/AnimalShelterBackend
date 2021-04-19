@@ -28,7 +28,7 @@ export class PrismaPetsRepository implements PetsRepository {
     return PrismaPetsMapper.toEntityPet(updatedPrismaPet);
   }
 
-  async create(pet: CreatePetPort): Promise<PetEntity> {
+  async create(pet: CreatePetPort): Promise<PetModel> {
     const petEntity = await PetEntity.new(pet);
     const prismaPet = await PrismaPetsMapper.toPrismaPet(petEntity);
 
@@ -41,7 +41,7 @@ export class PrismaPetsRepository implements PetsRepository {
 
   async findAll(
     page: Optional<RepositoryPageOptions & { filter: Optional<PetFilterPort> }>,
-  ): Promise<Iterable<PetEntity>> {
+  ): Promise<Iterable<PetModel>> {
     const findManyArgs: Prisma.SelectSubset<
       Prisma.PetFindManyArgs & { include: { pet_placements: true } },
       Prisma.PetFindManyArgs
@@ -86,7 +86,7 @@ export class PrismaPetsRepository implements PetsRepository {
     );
   }
 
-  async findById(id: number): Promise<Optional<PetEntity>> {
+  async findById(id: number): Promise<Optional<PetModel>> {
     const findUniqueArgs: Prisma.SelectSubset<
       Prisma.PetFindUniqueArgs & { include: { pet_placements: true } },
       Prisma.PetFindUniqueArgs

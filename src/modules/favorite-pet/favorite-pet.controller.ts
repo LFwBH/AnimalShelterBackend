@@ -21,14 +21,12 @@ import { CoreApiResponse } from "../../common/CoreApiResponse";
 import { Exception } from "../../common/Exception";
 import { User } from "../../common/UserDecorator";
 import { PrismaService } from "../../services/prisma.service";
+import { FindAllPetsResponse } from "../pets/application/swagger/find-all-pets.response";
+import { PetModel } from "../pets/domain/models/pet.model";
+import { PrismaPetsMapper } from "../pets/infrastructure/mappers/prisma-pets.mapper";
 import { JwtAuthGuard } from "../users/application/guards/jwt-auth.guard";
 import { FavoritePetMapper } from "./favorite-pet.mapper";
-import { FavoritePetModel } from "./favorite-pet.model";
-import {
-  FavoritePetArrayResponse,
-  FavoritePetOkResponse,
-  FavoritePetResponse,
-} from "./favorite-pet.response";
+import { FavoritePetOkResponse } from "./favorite-pet.response";
 
 @ApiTags("favorite_pet")
 @Controller("favorite_pet")
@@ -40,12 +38,12 @@ export class FavoritePetController {
 
   @Post(":petId")
   @UseGuards(JwtAuthGuard)
-  @ApiCreatedResponse({ type: FavoritePetResponse })
+  @ApiCreatedResponse({ type: FavoritePetOkResponse })
   @ApiBearerAuth()
   async create(
     @Param("petId", ParseIntPipe) petId: number,
     @User() user: User,
-  ): Promise<CoreApiResponse<FavoritePetModel>> {
+  ): Promise<CoreApiResponse<PetModel>> {
     const petExists = await this.prismaService.pet.findFirst({
       where: { id_pet: petId },
     });
@@ -57,10 +55,7 @@ export class FavoritePetController {
       });
     }
 
-    const createdFavoritePet = await this.prismaService.favoritePet.create({
-      include: {
-        pet: true,
-      },
+    await this.prismaService.favoritePet.create({
       data: {
         user_favorite_pets: {
           create: {
@@ -75,20 +70,19 @@ export class FavoritePetController {
       },
     });
 
-    return CoreApiResponse.success(
-      await this.favoritePetMapper.toEntity(createdFavoritePet),
-    );
+    return CoreApiResponse.success();
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiOkResponse({ type: FavoritePetArrayResponse })
+  @ApiOkResponse({ type: FindAllPetsResponse })
   @ApiBearerAuth()
   async findAll(
     @User() user: User,
     @Query("take") take?: string,
     @Query("cursor") cursor?: string,
-  ): Promise<CoreApiResponse<FavoritePetModel[]>> {
+    @Query("filter") filter?: Record<string, string>,
+  ): Promise<CoreApiResponse<PetModel[]>> {
     const findManyArgs: Prisma.SelectSubset<
       Prisma.FavoritePetFindManyArgs & { include: { pet: true } },
       Prisma.FavoritePetFindManyArgs
@@ -107,17 +101,37 @@ export class FavoritePetController {
       findManyArgs.cursor = { id_favorite_pet: Number(cursor) };
     }
 
+    if (filter != null) {
+      findManyArgs.where = {};
+
+      if (filter.name) {
+        findManyArgs.where.pet = {
+          name: {
+            contains: filter.name,
+            mode: "insensitive",
+          },
+        };
+      }
+    }
+
     const foundFavoritePets = await this.prismaService.favoritePet.findMany(
       findManyArgs,
     );
 
-    return CoreApiResponse.success(
-      await Promise.all(
-        foundFavoritePets.map((favoritePet) =>
-          this.favoritePetMapper.toEntity(favoritePet),
-        ),
+    const favoritePets = await Promise.all(
+      foundFavoritePets.map((favoritePet) =>
+        this.favoritePetMapper.toEntity(favoritePet),
       ),
     );
+
+    const petEntities = await Promise.all(
+      favoritePets.map(async (favoritePet) => {
+        const prismaPet = await PrismaPetsMapper.toPrismaPet(favoritePet.pet);
+        return PrismaPetsMapper.toEntityPet(prismaPet);
+      }),
+    );
+
+    return CoreApiResponse.success(petEntities);
   }
 
   @Delete(":favoritePetId")

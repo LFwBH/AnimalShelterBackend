@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { PrismaPetPlacementMapper } from "../../../placements/infrastructure/mappers/prisma-pet-placement.mapper";
+import { PetModel } from "../../domain/models/pet.model";
 import { PetEntity } from "../entities/pet.entity";
 
 type PrismaPet = Prisma.PetGetPayload<null>;
@@ -10,12 +11,12 @@ type PrismaPetWithPlacements = Prisma.PetGetPayload<{
 }>;
 
 export const PrismaPetsMapper = {
-  async toPrismaPet(pet: PetEntity): Promise<PrismaPet> {
+  async toPrismaPet(pet: PetModel): Promise<PrismaPet> {
     return {
       age: pet.age,
       archive_date: pet.archiveDate ?? null,
       archived: pet.archived,
-      came_from: pet.cameFrom,
+      came_from: pet.cameFrom ?? null,
       color: pet.color,
       created_at: pet.createdAt,
       description: pet.description,
@@ -34,7 +35,7 @@ export const PrismaPetsMapper = {
   },
 
   async toPrismaPetWithPlacements(
-    pet: PetEntity,
+    pet: PetModel,
   ): Promise<PrismaPetWithPlacements> {
     const prismaPet = await this.toPrismaPet(pet);
 
@@ -50,7 +51,7 @@ export const PrismaPetsMapper = {
     };
   },
 
-  async toEntityPet(pet: PrismaPet): Promise<PetEntity> {
+  async toEntityPet(pet: PrismaPet): Promise<PetModel> {
     return PetEntity.new({
       age: pet.age,
       archived: pet.archived,
@@ -75,7 +76,7 @@ export const PrismaPetsMapper = {
 
   async toEntityPetWithPlacements(
     pet: PrismaPetWithPlacements,
-  ): Promise<PetEntity> {
+  ): Promise<PetModel> {
     const petEntity = await this.toEntityPet(pet);
 
     const petPlacementEntities = await Promise.all(
