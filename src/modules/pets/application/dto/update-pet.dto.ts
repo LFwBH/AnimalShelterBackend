@@ -93,6 +93,8 @@ export class UpdatePetDto implements UpdatePetPort {
   @ValidateIf((o: UpdatePetDto) => !!o.sterilized)
   @ApiPropertyOptional({ type: Date })
   @IsDate()
-  @Transform(({ value, obj }) => (!obj.archived ? undefined : new Date(value)))
+  @Transform(({ value, obj }) =>
+    !obj.sterilized ? undefined : new Date(value),
+  )
   readonly sterilizationDate: Optional<Date>;
 }
