@@ -1659,10 +1659,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.1.3":
-  version: 13.1.3
-  resolution: "@types/validator@npm:13.1.3"
-  checksum: 47e1de4aebd3efbf97deea2d0f72b2308c924f95833c7a18d4f5d7cbd500f875fed9afd85038022ca352e3effb82241de149e5f1cbb32957b99fd7b0484641f3
+"@types/validator@npm:^13.7.10":
+  version: 13.7.10
+  resolution: "@types/validator@npm:13.7.10"
+  checksum: 5ad0f25659d04728d6c5e49ec7565195a60f047e1e7fd9393a8c1bbc5b024196b60075fc8d4b313312b6713ef77736864adfe87172bf534f6db9c97e1dc27ebe
   languageName: node
   linkType: hard
 
@@ -2098,7 +2098,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.22.0
     argon2: ^0.27.2
     class-transformer: ^0.4.0
-    class-validator: ^0.13.1
+    class-validator: ^0.14.0
     compression: ^1.7.4
     cross-env: ^7.0.3
     eslint: ^7.24.0
@@ -2923,14 +2923,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-validator@npm:^0.13.1":
-  version: 0.13.1
-  resolution: "class-validator@npm:0.13.1"
+"class-validator@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "class-validator@npm:0.14.0"
   dependencies:
-    "@types/validator": ^13.1.3
-    libphonenumber-js: ^1.9.7
-    validator: ^13.5.2
-  checksum: 09a7d83213ac40b2c57502790701277b323f0977d0e1d5597c1a5a0990a8c9ee04ab75b8e2395a39063c0ee9dd196e1cb900a420ff5808b8a1923de2b8c705fe
+    "@types/validator": ^13.7.10
+    libphonenumber-js: ^1.10.14
+    validator: ^13.7.0
+  checksum: 5faf11bef14d9013e299ca152f7d2b95fcadf8290fe8681e54c6b509cd5df8d8b43999970ad18e8ee359bebdbb143cab37e212c793adf28cca09a717bb9eb7a2
   languageName: node
   linkType: hard
 
@@ -6374,10 +6374,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.9.7":
-  version: 1.9.9
-  resolution: "libphonenumber-js@npm:1.9.9"
-  checksum: bead80442de97d8abca2982093fe5da2ca21b17664cd30ea2c309bafa9cb8861eb85754356ecff5ea54b7d8dba0675ac7613ad9e46186fb4250aa95b5f19df92
+"libphonenumber-js@npm:^1.10.14":
+  version: 1.10.18
+  resolution: "libphonenumber-js@npm:1.10.18"
+  checksum: c6a8927b1cedfa984a57fe37ef94f4793ed57dede16f2a03bc2a2c5834bea09d4293ac9d760987376e6b8885e6aa1f3e7e2beeee8eef4b629c6ff6e6acf912f5
   languageName: node
   linkType: hard
 
@@ -9695,10 +9695,10 @@ typescript@^4.2.4:
   languageName: node
   linkType: hard
 
-"validator@npm:^13.5.2":
-  version: 13.5.2
-  resolution: "validator@npm:13.5.2"
-  checksum: 6da12682ad43456cb3a97d23b35cad0b438d9027a6c6fd824d5c86fead42c28f4e38c67590d8f56ab44e6c612979cbaa5f5cc670cc5fcc5a39d5032fcb642296
+"validator@npm:^13.7.0":
+  version: 13.7.0
+  resolution: "validator@npm:13.7.0"
+  checksum: d6621f541d49f354be0944544665ecca5853e7d08def5de58204c7ea3b4020ddc0d64d7232fa9ea9ff57656c8a955117c76f0267e6d4690d761cfd018857f62d
   languageName: node
   linkType: hard
 
